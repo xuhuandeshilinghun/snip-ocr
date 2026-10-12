@@ -4,7 +4,7 @@
 [English](../README.md)｜[日本語](README_ja.md)｜[한국어](README_ko.md)｜[Русский](README_ru.md)｜[Français](README_fr.md)｜[Deutsch](README_de.md)｜[简体中文](README_zh.md)｜[繁體中文](README_zh_TW.md)
 
 
-💖 プロジェクトを支援する: [Ko‑fi](https://ko‑fi.com/edenls)
+💖 プロジェクトを支援する: [Ko‑fi](https://ko-fi.com/edenls)
 
 </div>
 
@@ -201,7 +201,7 @@ MIT License。ルートディレクトリの`LICENSE`ファイルを参照。
 
 ## プロジェクト支援
 SnapOCRは個人利用に限り完全オープンソース・無料です。ツールが役に立った場合はKo‑fiから開発を支援できます：
-👉 [https://ko‑fi.com/edenls](https://ko‑fi.com/edenls)
+👉 [https://ko-fi.com/edenls](https://ko-fi.com/edenls)
 
 ## 連絡・フィードバック
 ‑ メール：senjin@foxmail.com

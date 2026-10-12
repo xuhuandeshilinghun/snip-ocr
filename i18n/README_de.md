@@ -6,7 +6,7 @@
 
 
 
-💖 Unterstütze dieses Projekt: [Ko‑fi](https://ko‑fi.com/edenls)
+💖 Unterstütze dieses Projekt: [Ko‑fi](https://ko-fi.com/edenls)
 
 </div>
 
@@ -202,7 +202,7 @@ MIT‑Lizenz, siehe Datei `LICENSE` im Wurzel‑Verzeichnis.
 
 ## Projekt unterstützen
 SnapOCR ist vollständig quelloffen und kostenlos für den privaten Gebrauch. Wenn du dieses Tool nützlich findest, kannst du die weitere Entwicklung freiwillig über Ko‑fi unterstützen:
-👉 [https://ko‑fi.com/edenls](https://ko‑fi.com/edenls)
+👉 [https://ko-fi.com/edenls](https://ko-fi.com/edenls)
 
 ## Kontakt & Feedback
 ‑ E‑Mail: senjin@foxmail.com

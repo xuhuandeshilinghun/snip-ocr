@@ -4,7 +4,7 @@
 [English](../README.md)｜[日本語](README_ja.md)｜[한국어](README_ko.md)｜[Русский](README_ru.md)｜[Français](README_fr.md)｜[Deutsch](README_de.md)｜[简体中文](README_zh.md)｜[繁體中文](README_zh_TW.md)
 
 
-💖 Support this project / 支持本项目：[Ko‑fi](https://ko‑fi.com/edenls)
+💖 Support this project / 支持本项目：[Ko‑fi](https://ko-fi.com/edenls)
 
 </div>
 
@@ -191,7 +191,7 @@ MIT License，详情查看仓库根目录 `LICENSE` 文件。
 
 ## 支持项目
 SnapOCR 完全开源免费供个人使用。如果你觉得本工具有帮助，可以通过 Ko‑fi 进行自愿赞助，支持后续迭代开发：
-👉 [https://ko‑fi.com/edenls](https://ko‑fi.com/edenls)
+👉 [https://ko-fi.com/edenls](https://ko-fi.com/edenls)
 
 ## 联系反馈
 - 邮箱：senjin@foxmail.com

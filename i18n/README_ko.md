@@ -6,7 +6,7 @@
 
 
 
-💖 프로젝트 지원: [Ko‑fi](https://ko‑fi.com/edenls)
+💖 프로젝트 지원: [Ko‑fi](https://ko-fi.com/edenls)
 
 </div>
 
@@ -203,7 +203,7 @@ MIT License. 루트 디렉토리의 `LICENSE` 파일을 참고하세요.
 
 ## 프로젝트 후원
 SnapOCR은 개인 사용에 한해 완전 오픈소스 무료 소프트웨어입니다. 이 툴이 유용하다면 Ko‑fi를 통해 개발을 자발적으로 지원할 수 있습니다:
-👉 [https://ko‑fi.com/edenls](https://ko‑fi.com/edenls)
+👉 [https://ko-fi.com/edenls](https://ko-fi.com/edenls)
 
 ## 연락 및 피드백
 ‑ 이메일: senjin@foxmail.com

@@ -6,7 +6,7 @@
 
 
 
-💖 Support this project / 支持本项目：[Ko‑fi](https://ko‑fi.com/edenls)
+💖 Support this project / 支持本项目：[Ko‑fi](https://ko-fi.com/edenls)
 
 </div>
 
@@ -199,7 +199,7 @@ MIT License，詳情請參閱儲存庫根目錄的 `LICENSE` 檔案。
 
 ## 支援專案
 SnapOCR 完全開源免費供個人使用。如果你覺得本工具對你有幫助，可以透過 Ko‑fi 自願贊助，協助後續版本迭代開發：
-👉 [https://ko‑fi.com/edenls](https://ko‑fi.com/edenls)
+👉 [https://ko-fi.com/edenls](https://ko-fi.com/edenls)
 
 ## 聯絡回報
 - 信箱：senjin@foxmail.com
