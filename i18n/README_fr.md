@@ -1,7 +1,10 @@
 <div align="center">
 
 **Readme Language / Langue：**
-[English](./README-en.md)｜[日本語](./README-ja.md)｜[한국어](./README-ko.md)｜[Русский](./README-ru.md)｜[Français](./README-fr.md)｜[Deutsch](./README-de.md)｜[简体中文](../README.md)｜[繁體中文](./README-zh-TW.md)
+[English](../README.md)｜[日本語](./i18n/README_ja.md)｜[한국어](./i18n/README_ko.md)｜[Русский](./i18n/README_ru.md)｜[Français](./i18n/README_fr.md)｜[Deutsch](./i18n/README_de.md)｜[简体中文](./i18n/README_zh.md)｜[繁體中文](./i18n/README_zh_TW.md)
+
+
+
 
 💖 Soutenez ce projet : [Ko‑fi](https://ko‑fi.com/edenls)
 
