@@ -1,7 +1,7 @@
 <div align="center">
 
 **Readme Language / Sprache：**
-[English](../README.md)｜[日本語](./i18n/README_ja.md)｜[한국어](./i18n/README_ko.md)｜[Русский](./i18n/README_ru.md)｜[Français](./i18n/README_fr.md)｜[Deutsch](./i18n/README_de.md)｜[简体中文](./i18n/README_zh.md)｜[繁體中文](./i18n/README_zh_TW.md)
+[English](../README.md)｜[日本語](README_ja.md)｜[한국어](README_ko.md)｜[Русский](README_ru.md)｜[Français](README_fr.md)｜[Deutsch](README_de.md)｜[简体中文](README_zh.md)｜[繁體中文](README_zh_TW.md)
 
 
 
