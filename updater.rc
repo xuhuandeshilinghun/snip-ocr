@@ -1,0 +1,7 @@
+// updater.rc - Windows resource file for updater.exe
+// Embeds the application icon
+
+#include <windows.h>
+
+// Main application icon (ID 1 = default icon)
+1 ICON "resources/img/logo.ico"

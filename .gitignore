@@ -14,3 +14,12 @@ build_release_1.0.1/
 build_release_1.0.2/
 build_release_1.0.3/
 build_release_*/
+
+
+*.pdb
+*.zip
+*.exe
+*.dll
+build/
+out/
+

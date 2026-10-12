@@ -129,6 +129,73 @@ Les rapports de bogues, demandes de fonctionnalités (Issues) et Pull Requests s
 
 > Consignes de soumission : ne validez pas les artefacts de compilation, le contenu du dossier build ou les gros fichiers de modèle. Préférez git submodule pour les bibliothèques tierces.
 
+## Développeur : Compilation, empaquetage et publication
+
+> Non destiné aux utilisateurs finaux, réservé aux mainteneurs du projet.
+
+### Prétraitement des ressources avant publication
+
+Exécutez **obligatoirement** ces scripts de compilation des ressources avant chaque empaquetage de version :
+
+```
+# Compiler les ressources de traduction multilingue
+python tools\compile_locales.py
+# Empaqueter les ressources d’images
+python tools\pack_img_res.py
+```
+
+### Logique de sélection du paquet de mise à jour (règles du programme de mise à jour automatique)
+
+| Version installée localement | Type de paquet à télécharger |
+| --- | --- |
+| V1.0.1 (version officielle précédente) | Paquet delta (le plus léger, quelques Mo seulement) |
+| V1.0.0 (version de référence) | Paquet complet (calcul des différences par rapport à la référence 1.0.0) |
+| Autres anciennes versions | Paquet complet (calcul des différences par rapport à la référence 1.0.0) |
+| Non installé | **La version de référence V1.0.0 doit d’abord être installée** |
+
+> ⚠️ `build_release_1.0.0` est le répertoire de référence global. **Générez‑le une seule fois, conservez‑le définitivement, ne le supprimez ni ne le modifiez**. Toutes les mises à jour delta ultérieures dépendent de cette référence.
+
+### Exemples de script make_release.py
+
+```
+# 1.【À exécuter une seule fois】Créer la version de référence 1.0.0
+python tools/make_release.py --version 1.0.0 --no-build
+
+# 2.Publier la version 1.0.1 (référence fixée à 1.0.0, comparaison avec l’ancien build_release_1.0.0)
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0 --base-dir build_release_1.0.0 --no-build
+
+# 3.Publier la version 1.0.2 (référence fixée à 1.0.0, comparaison avec l’ancien build_release_1.0.1)
+python tools/make_release.py --version 1.0.2 --make-update --old build_release_1.0.1 --base-dir build_release_1.0.0 --no-build
+
+# 4.Publier la version 1.0.3 (référence fixée à 1.0.0, comparaison avec l’ancien build_release_1.0.2)
+python tools/make_release.py --version 1.0.3 --make-update --old build_release_1.0.2 --base-dir build_release_1.0.0 --no-build
+
+# Commandes fréquemment utilisées
+# Flux complet : compilation + collecte des artefacts de publication
+python tools/make_release.py --version 1.0.1
+
+# Compiler + générer le paquet complet et le paquet delta de mise à jour
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0
+
+# Binaires déjà compilés, empaquetage uniquement, ignorer l’étape de compilation
+python tools/make_release.py --version 1.0.1 --no-build
+
+# Générer les paquets de mise à jour avec notes de version et drapeau de mise à jour forcée activé
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0 --update-log "1.Optimiser l’interface utilisateur\n2.Corriger les bogues connus" --force-update
+```
+
+### Référence succincte des paramètres
+
+- `--version x.x.x` : définir le numéro de version cible de la publication
+- `--no-build` : ignorer la compilation C++, réaliser uniquement l’empaquetage (utiliser quand les binaires sont déjà construits)
+- `--make-update` : activer la génération du paquet delta ; produit à la fois le paquet complet et le correctif delta
+- `--old <dir>` : répertoire de la version officielle précédente, utilisé pour la comparaison de fichiers afin de générer le correctif delta
+- `--base-dir <dir>` : répertoire de référence global, toujours renseigné avec `build_release_1.0.0`
+- `--update-log` : notes de version de cette version ; utiliser `\n` pour les sauts de ligne
+- `--force-update` : activer le drapeau de mise à jour forcée ; le client imposera la mise à niveau
+
+> Les fichiers issus de la compilation sont générés dans `build_release_<version>`. Téléversez les archives ZIP de ce dossier sur GitHub Releases.
+
 ## Licence
 Licence MIT, voir le fichier `LICENSE` à la racine du dépôt.
 

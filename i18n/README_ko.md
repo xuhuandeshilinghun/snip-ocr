@@ -129,6 +129,75 @@ SnapOCR은 Windows 10 / 11 x64용 오픈소스 올인원 데스크톱 유틸리�
 
 > 제출 시 유의점: 빌드 산출물, build 폴더, 대용량 모델 파일을 커밋하지 마세요. 서드파티 라이브러리는 git submodule 사용을 권장합니다.
 
+## 개발자: 빌드, 패키징 및 릴리즈
+
+> 최종 사용자를 위한 내용이 아닙니다. 프로젝트 유지보수 전용입니다.
+
+### 릴리즈 전 리소스 전처리
+
+릴리즈 패키지를 빌드하기 전에 **반드시** 아래 리소스 컴파일 스크립트를 실행하십시오.
+
+```
+# 다국어 로케일 리소스 컴파일
+python tools\compile_locales.py
+# 이미지 리소스 패킹
+python tools\pack_img_res.py
+```
+
+### 업데이트 패키지 선택 로직(자동 업데이터 규칙)
+
+| 로컬 설치 버전 | 다운로드할 패키지 유형 |
+| --- | --- |
+| V1.0.1(이전 공식 릴리즈) | 델타 패키지(용량이 가장 적으며 수 MB 수준) |
+| V1.0.0(기준 버전) | 전체 패키지(1.0.0 기준 버전과의 차이 연산) |
+| 그 외 구버전 | 전체 패키지(1.0.0 기준 버전과의 차이 연산) |
+| 미설치 상태 | **먼저 V1.0.0 기준 버전을 설치해야 합니다** |
+
+
+> ⚠️ `build_release_1.0.0`은 전역 기준 디렉터리입니다. **단 한 번만 생성하고 영구적으로 보관하십시오. 삭제하거나 수정하지 마십시오.** 이후 모든 델타 업데이트는 이 기준 디렉터리에 의존합니다.
+
+### make_release.py 스크립트 예시
+
+```
+# 1.【한 번만 실행】기준 버전 1.0.0 생성
+python tools/make_release.py --version 1.0.0 --no-build
+
+# 2.1.0.1 릴리즈(기준은 1.0.0 고정, 이전 버전 build_release_1.0.0과 비교)
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0 --base-dir build_release_1.0.0 --no-build
+
+# 3.1.0.2 릴리즈(기준은 1.0.0 고정, 이전 버전 build_release_1.0.1과 비교)
+python tools/make_release.py --version 1.0.2 --make-update --old build_release_1.0.1 --base-dir build_release_1.0.0 --no-build
+
+# 4.1.0.3 릴리즈(기준은 1.0.0 고정, 이전 버전 build_release_1.0.2과 비교)
+python tools/make_release.py --version 1.0.3 --make-update --old build_release_1.0.2 --base-dir build_release_1.0.0 --no-build
+
+# 자주 사용하는 명령어
+# 전체 작업 흐름: 컴파일 빌드 + 릴리즈 산출물 수집
+python tools/make_release.py --version 1.0.1
+
+# 빌드 실행 + 전체 패키지·델타 업데이트 패키지 생성
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0
+
+# 바이너리가 이미 컴파일 완료됨, 패키징만 수행하고 빌드 단계 건너뛰기
+python tools/make_release.py --version 1.0.1 --no-build
+
+# 업데이트 로그와 강제 업데이트 플래그를 활성화한 뒤 업데이트 패키지 생성
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0 --update-log "1.UI 최적화\n2.알려진 문제 수정" --force-update
+```
+
+### 매개변수 간략 참조
+
+- `--version x.x.x`: 대상 릴리즈 버전 번호 지정
+- `--no-build`: C++ 컴파일을 건너뛰고 패키징만 수행(바이너리가 이미 빌드되었을 때 사용)
+- `--make-update`: 델타 패키지 생성을 활성화하며 전체 패키지와 델타 패치를 모두 출력
+- `--old <dir>`: 이전 공식 릴리즈 디렉터리, 파일 비교를 통해 델타 패치를 생성할 때 사용
+- `--base-dir <dir>`: 전역 기준 디렉터리, 항상 `build_release_1.0.0`로 지정
+- `--update-log`: 해당 버전의 릴리즈 노트, 줄바꿈에는 `\n`을 사용
+- `--force-update`: 강제 업데이트 플래그 활성화, 클라이언트에서 업그레이드를 강제 실행
+ 
+> 빌드 결과물은 `build_release_<version>` 하위에 출력됩니다. 폴더 내 zip 아카이브를 GitHub Releases에 업로드하십시오.
+
+
 ## 라이선스
 MIT License. 루트 디렉토리의 `LICENSE` 파일을 참고하세요.
 

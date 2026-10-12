@@ -129,6 +129,74 @@ Fehler‑Berichte und Funktions‑Wünsche als Issues sowie Pull‑Requests sind
 
 > Hinweise zur Einreichung: Committe keine Build‑Artefakte, Inhalte des build‑Ordners oder große Modell‑Dateien. Bevorzuge git‑Submodule für Dritt‑Bibliotheken.
 
+## Entwickler: Erstellen, Verpacken und Veröffentlichen
+
+> Nicht für Endbenutzer, nur für Projekt‑Betreuer.
+
+### Vorverarbeitung der Ressourcen vor der Veröffentlichung
+
+Führen Sie **unbedingt** diese Ressourcen‑Kompilierungsskripte vor jeder Release‑Verpackung aus:
+
+```
+# Kompilieren mehrsprachiger Lokalisierungs‑Ressourcen
+python tools\compile_locales.py
+# Verpacken der Bildressourcen
+python tools\pack_img_res.py
+```
+
+### Logik zur Auswahl des Update‑Pakets (Regeln des Auto‑Updaters)
+
+| Lokal installierte Version | Herunterzuladender Pakettyp |
+| --- | --- |
+| V1.0.1 (vorherige offizielle Version) | Delta‑Paket (kleinste Größe, nur wenige MB) |
+| V1.0.0 (Basisversion) | Vollständiges Paket (Berechnung der Unterschiede zur Basisversion 1.0.0) |
+| Andere ältere Versionen | Vollständiges Paket (Berechnung der Unterschiede zur Basisversion 1.0.0) |
+| Nicht installiert | **Zuerst muss die Basisversion V1.0.0 installiert werden** |
+ 
+> ⚠️ `build_release_1.0.0` ist das globale Basisverzeichnis. **Erstellen Sie es einmalig, behalten Sie es dauerhaft, löschen oder ändern Sie es nicht**. Alle nachfolgenden Delta‑Updates hängen von dieser Basis ab.
+
+### Beispiele für das Skript make_release.py
+
+```
+# 1.【Nur einmal ausführen】Basisversion 1.0.0 erstellen
+python tools/make_release.py --version 1.0.0 --no-build
+
+# 2.Veröffentlichung von 1.0.1 (Basis fest auf 1.0.0, Vergleich mit altem build_release_1.0.0)
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0 --base-dir build_release_1.0.0 --no-build
+
+# 3.Veröffentlichung von 1.0.2 (Basis fest auf 1.0.0, Vergleich mit altem build_release_1.0.1)
+python tools/make_release.py --version 1.0.2 --make-update --old build_release_1.0.1 --base-dir build_release_1.0.0 --no-build
+
+# 4.Veröffentlichung von 1.0.3 (Basis fest auf 1.0.0, Vergleich mit altem build_release_1.0.2)
+python tools/make_release.py --version 1.0.3 --make-update --old build_release_1.0.2 --base-dir build_release_1.0.0 --no-build
+
+# Häufig verwendete Befehle
+# Kompletter Ablauf: Kompilieren + Sammeln der Release‑Dateien
+python tools/make_release.py --version 1.0.1
+
+# Erstellen + Generieren von Voll‑ und Delta‑Update‑Paket
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0
+
+# Binärdateien bereits kompiliert, nur Verpacken, Build‑Schritt überspringen
+python tools/make_release.py --version 1.0.1 --no-build
+
+# Update‑Pakete mit Versionshinweisen und aktiviertem Zwangs‑Update‑Flag erstellen
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0 --update-log "1.UI optimieren\n2.Bekannte Fehler beheben" --force-update
+```
+
+### Kurze Parameter‑Referenz
+
+- `--version x.x.x`: Festlegen der Ziel‑Release‑Versionsnummer
+- `--no-build`: C++‑Kompilierung überspringen, nur Verpacken (verwenden, wenn Binärdateien bereits erstellt wurden)
+- `--make-update`: Delta‑Paket‑Generierung aktivieren; gibt sowohl Vollpaket als auch Delta‑Patch aus
+- `--old <dir>`: Verzeichnis der vorherigen offiziellen Version, zum Dateivergleich für das Erstellen von Delta‑Patches
+- `--base-dir <dir>`: Globales Basisverzeichnis, immer auf `build_release_1.0.0` setzen
+- `--update-log`: Versionshinweise für diese Version; Zeilenumbrüche mit `\n`
+- `--force-update`: Zwangs‑Update‑Flag aktivieren; der Client führt das Upgrade zwingend aus
+
+
+> Die Build‑Ausgabedateien befinden sich unter `build_release_<version>`. Laden Sie die ZIP‑Archive aus diesem Ordner auf GitHub Releases hoch.
+
 ## Lizenz
 MIT‑Lizenz, siehe Datei `LICENSE` im Wurzel‑Verzeichnis.
 

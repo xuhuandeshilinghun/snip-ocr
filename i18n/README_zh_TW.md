@@ -125,6 +125,75 @@ SnapOCR 是面向 Windows 10 / 11 x64 平台的開源桌面整合工具，整合
 
 > 提交程式碼注意：不要提交編譯產物、build 目錄、大型模型檔；第三方函式庫優先使用 submodule 管理。
 
+## 開發者：編譯、封裝與發布
+
+> 非給一般使用者閱讀，僅供專案維護人員使用。
+
+### 發布前資源前置處理
+
+每次發布封裝前，**務必**執行以下資源編譯指令稿：
+
+```
+# 編譯多語系地區資源
+python tools\compile_locales.py
+# 封裝圖片資源
+python tools\pack_img_res.py
+```
+
+### 更新套件選擇邏輯（自動更新器規則）
+
+| 本機已安裝版本 | 下載之套件類型 |
+| --- | --- |
+| V1.0.1（前一正式版本） | 差異套件（體積最小，僅數 MB） |
+| V1.0.0（基準版本） | 完整套件（以 1.0.0 基準版計算差異） |
+| 其他舊版本 | 完整套件（以 1.0.0 基準版計算差異） |
+| 尚未安裝 | **必須先安裝 V1.0.0 基準版本** |
+
+> ⚠️ `build_release_1.0.0` 為全域基準目錄。**僅需產生一次，永久保留，請勿刪除或修改**。後續所有差異更新皆仰賴此基準。
+
+### make_release.py 指令稿範例
+
+```
+# 1.【僅執行一次】建立基準版本 1.0.0
+python tools/make_release.py --version 1.0.0 --no-build
+
+# 2.發布 1.0.1（基準固定為1.0.0，與舊版 build_release_1.0.0 比對）
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0 --base-dir build_release_1.0.0 --no-build
+
+# 3.發布 1.0.2（基準固定為1.0.0，與舊版 build_release_1.0.1 比對）
+python tools/make_release.py --version 1.0.2 --make-update --old build_release_1.0.1 --base-dir build_release_1.0.0 --no-build
+
+# 4.發布 1.0.3（基準固定為1.0.0，與舊版 build_release_1.0.2 比對）
+python tools/make_release.py --version 1.0.3 --make-update --old build_release_1.0.2 --base-dir build_release_1.0.0 --no-build
+
+# 常用指令
+# 完整流程：編譯建置 + 收集發布檔案
+python tools/make_release.py --version 1.0.1
+
+# 建置編譯 + 產生完整套件與差異更新套件
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0
+
+# 二進位檔已編譯完成，僅執行封裝，跳過建置程序
+python tools/make_release.py --version 1.0.1 --no-build
+
+# 產生更新套件，附帶更新日誌並開啟強制更新旗標
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0 --update-log "1.最佳化使用者介面\n2.修正已知問題" --force-update
+```
+
+### 參數簡易參考
+
+- `--version x.x.x`：設定目標發布版本號
+- `--no-build`：跳過 C++ 編譯，僅執行封裝（二進位檔已建置完成時使用）
+- `--make-update`：開啟差異套件產生功能；同時輸出完整套件與差異修補檔
+- `--old <dir>`：前一正式版本目錄，用於檔案比對以產生差異修補檔
+- `--base-dir <dir>`：全域基準目錄，請一律填寫 `build_release_1.0.0`
+- `--update-log`：該版本之發布備註，換行請使用 `\n`
+- `--force-update`：開啟強制更新旗標；用戶端將強制執行升級
+
+
+> 建置輸出檔案位於 `build_release_<version>` 目錄底下。請將該資料夾內的 ZIP 壓縮檔上傳至 GitHub Releases。
+
+
 ## 授權條款
 MIT License，詳情請參閱儲存庫根目錄的 `LICENSE` 檔案。
 

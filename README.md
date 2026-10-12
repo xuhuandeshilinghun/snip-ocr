@@ -129,6 +129,73 @@ Bug reports and feature‑request Issues and Pull Requests are welcome.
 
 > Notes for submission: Do NOT commit build artifacts, build‑directory contents or large model files. Prefer git submodules for third‑party libraries.
 
+## Developer: Build, Packaging and Release
+
+> Not for end‑users, for project maintainers only.
+
+### Pre‑release resource preprocessing
+
+You **must** run these resource‑compilation scripts before every release packaging:
+
+```
+# Compile multi‑language locale resources
+python tools\compile_locales.py
+# Pack image resources
+python tools\pack_img_res.py
+```
+
+### Update package selection logic (auto‑updater rules)
+
+| Installed local version | Package type to download |
+| --- | --- |
+| V1.0.1 (previous official release) | Delta package (smallest, only several MB) |
+| V1.0.0 (baseline version) | Full package (diff computed against baseline 1.0.0) |
+| Other older versions | Full package (diff computed against baseline 1.0.0) |
+| Not installed yet | **V1.0.0 baseline version must be installed first** |
+
+> ⚠️ `build_release_1.0.0` is the global baseline directory. **Generate it once, keep it permanently, do not delete or modify it**. All subsequent delta updates depend on this baseline.
+
+### make_release.py script examples
+
+```
+# 1.【Run once only】Create baseline version 1.0.0
+python tools/make_release.py --version 1.0.0 --no-build
+
+# 2.Release 1.0.1 (baseline fixed to 1.0.0, compare against old build_release_1.0.0)
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0 --base-dir build_release_1.0.0 --no-build
+
+# 3.Release 1.0.2 (baseline fixed to 1.0.0, compare against old build_release_1.0.1)
+python tools/make_release.py --version 1.0.2 --make-update --old build_release_1.0.1 --base-dir build_release_1.0.0 --no-build
+
+# 4.Release 1.0.3 (baseline fixed to 1.0.0, compare against old build_release_1.0.2)
+python tools/make_release.py --version 1.0.3 --make-update --old build_release_1.0.2 --base-dir build_release_1.0.0 --no-build
+
+# Frequently‑used commands
+# Full workflow: compile build + collect release artifacts
+python tools/make_release.py --version 1.0.1
+
+# Build compile + generate full package + delta update package
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0
+
+# Binaries already compiled, packaging only, skip build step
+python tools/make_release.py --version 1.0.1 --no-build
+
+# Generate update packages with release notes and force‑update flag enabled
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0 --update-log "1.Optimize UI\n2.Fix known issues" --force-update
+```
+
+### Brief parameter reference
+
+- `--version x.x.x`: Set target release version number
+- `--no-build`: Skip C++ compilation, perform packaging only (use when binaries are already built)
+- `--make-update`: Enable delta‑package generation; outputs both full package and delta patch
+- `--old <dir>`: Directory of previous official release, used for file comparison to generate delta patches
+- `--base-dir <dir>`: Global baseline directory, always set to `build_release_1.0.0`
+- `--update-log`: Release notes for this version; use `\n` for line breaks
+- `--force-update`: Enable force‑update flag; client will enforce mandatory upgrade
+
+> Build outputs are placed under `build_release_<version>`. Upload the zip archives inside this folder to GitHub Releases.
+
 ## License
 MIT License, refer to root‑directory `LICENSE` file.
 

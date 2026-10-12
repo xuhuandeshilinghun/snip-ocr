@@ -127,6 +127,75 @@ SnapOCR は Windows 10 / 11 x64 向けのオープンソース統合デスクト
 
 > 注意：ビルド生成物、buildフォルダ、大きなモデルファイルをコミットしないでください。サードパーティライブラリはgit submoduleの使用を推奨。
 
+## 開発者向け：ビルド、パッケージ作成、リリース
+
+> エンドユーザー向けではありません。プロジェクトメンテナ専用の内容です。
+
+### リリース前リソース前処理
+
+リリース用パッケージを作成する前に、**必ず**下記のリソースコンパイルスクリプトを実行してください。
+
+```
+# 多言語ロケールリソースのコンパイル
+python tools\compile_locales.py
+# 画像リソースのパッキング
+python tools\pack_img_res.py
+```
+
+### 更新パッケージ選択ロジック（自動アップデーターのルール）
+
+| ローカルにインストール済みバージョン | ダウンロードするパッケージ種別 |
+| --- | --- |
+| V1.0.1（前回正式リリース版） | 差分パッケージ（最もサイズが小さく、数MB程度） |
+| V1.0.0（ベースライン版） | フルパッケージ（1.0.0ベースラインとの差分を計算） |
+| その他の古いバージョン | フルパッケージ（1.0.0ベースラインとの差分を計算） |
+| 未インストール | **最初にV1.0.0ベースライン版をインストールする必要があります** |
+ 
+> ⚠️ `build_release_1.0.0` はグローバルなベースラインディレクトリです。**1回だけ生成し、永久に保持してください。削除・変更しないでください**。以降のすべての差分更新はこのベースラインに依存します。
+
+### make_release.py スクリプト使用例
+
+```
+# 1.【実行は1回のみ】ベースラインバージョン1.0.0を作成
+python tools/make_release.py --version 1.0.0 --no-build
+
+# 2.1.0.1をリリース（ベースラインは1.0.0固定、旧版 build_release_1.0.0 と比較）
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0 --base-dir build_release_1.0.0 --no-build
+
+# 3.1.0.2をリリース（ベースラインは1.0.0固定、旧版 build_release_1.0.1 と比較）
+python tools/make_release.py --version 1.0.2 --make-update --old build_release_1.0.1 --base-dir build_release_1.0.0 --no-build
+
+# 4.1.0.3をリリース（ベースラインは1.0.0固定、旧版 build_release_1.0.2 と比較）
+python tools/make_release.py --version 1.0.3 --make-update --old build_release_1.0.2 --base-dir build_release_1.0.0 --no-build
+
+# よく使うコマンド
+# 完全ワークフロー：コンパイルビルド + リリース成果物収集
+python tools/make_release.py --version 1.0.1
+
+# ビルド実行 + フルパッケージ・差分更新パッケージを生成
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0
+
+# バイナリは既にコンパイル済み、パッケージ作成のみ実行、ビルド手順をスキップ
+python tools/make_release.py --version 1.0.1 --no-build
+
+# 更新ログと強制更新フラグを有効にして更新パッケージを生成
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0 --update-log "1.UIを最適化\n2.既知の不具合を修正" --force-update
+```
+
+### パラメータ簡易リファレンス
+
+- `--version x.x.x`：リリース対象のバージョン番号を指定
+- `--no-build`：C++コンパイルをスキップ、パッケージ作成のみ実行（バイナリが既にビルド済みの場合に使用）
+- `--make-update`：差分パッケージ生成を有効。フルパッケージと差分パッチの両方を出力
+- `--old <dir>`：前回正式リリースのディレクトリ。ファイル比較を行い差分パッチを作成するために使用
+- `--base-dir <dir>`：グローバルベースラインディレクトリ。常に `build_release_1.0.0` を指定
+- `--update-log`：当該バージョンのリリースノート。改行には `\n` を使用
+- `--force-update`：強制更新フラグを有効。クライアント側でアップグレードを強制実行
+
+ 
+> ビルド成果物は `build_release_<version>` 配下に出力されます。フォルダ内のzipアーカイブをGitHub Releasesへアップロードしてください。
+
+
 ## ライセンス
 MIT License。ルートディレクトリの`LICENSE`ファイルを参照。
 

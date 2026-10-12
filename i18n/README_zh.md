@@ -120,14 +120,71 @@ SnapOCR 是面向 Windows 10 / 11 x64 平台的开源桌面一体化工具，集
 - OCR模型体积较大，需要手动单独下载部署。
 - 多显示器混合DPI缩放场景建议实际使用测试，部分特殊硬件环境可能存在适配问题。
 
+
 ## 参与项目贡献
 欢迎提交 Issue 反馈Bug与功能建议，也欢迎提交 Pull Request。
 1. Fork 本仓库
 2. 创建功能分支：`git checkout -b feature/your‑feature‑name`
 3. 提交你的修改
 4. Push分支，提交PR
-
 > 提交代码注意：不要提交编译产物、build目录、大型模型文件；第三方库优先使用submodule管理。
+
+## 开发者：编译、打包与发布
+> 普通用户无需阅读，仅面向项目维护者。
+
+### 发布前资源预处理
+每次打包发布前，必须执行资源编译脚本：
+```bash
+# 多语言资源编译
+python tools\compile_locales.py
+# 图片资源打包
+python tools\pack_img_res.py
+
+更新包下载选择逻辑（程序自动更新器规则）
+用户本地已安装版本	下载包类型
+V1.0.1（上一正式版）	差分包（体积最小，仅几 MB）
+V1.0.0（基准版）	全量包（基于 1.0.0 基准计算差异）
+其他旧版本	全量包（基于 1.0.0 基准计算差异）
+未安装软件	需要先安装 V1.0.0 基准版
+
+> ⚠️ `build_release_1.0.0` 为全局基准目录，**仅生成一次，永久保留，请勿删除修改**，后续所有差分更新依赖该基线。
+
+### make_release.py 发布脚本示例
+# 1.【仅执行一次】建立1.0.0基准版本
+python tools/make_release.py --version 1.0.0 --no-build
+
+# 2.发布1.0.1（基准固定1.0.0，对比旧版 build_release_1.0.0）
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0 --base-dir build_release_1.0.0 --no-build
+
+# 3.发布1.0.2（基准固定1.0.0，对比旧版 build_release_1.0.1）
+python tools/make_release.py --version 1.0.2 --make-update --old build_release_1.0.1 --base-dir build_release_1.0.0 --no-build
+
+# 4.发布1.0.3（基准固定1.0.0，对比旧版 build_release_1.0.2）
+python tools/make_release.py --version 1.0.3 --make-update --old build_release_1.0.2 --base-dir build_release_1.0.0 --no-build
+
+# 常用命令
+# 完整：编译构建 + 收集发布文件
+python tools/make_release.py --version 1.0.1
+
+# 构建编译 + 生成全量包+差分更新包
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0
+
+# 已经编译完成，仅打包，跳过构建
+python tools/make_release.py --version 1.0.1 --no-build
+
+# 生成更新包，附带更新日志、开启强制更新标记
+python tools/make_release.py --version 1.0.1 --make-update --old build_release_1.0.0 --update-log "1.优化UI\n2.修复已知问题" --force-update
+
+### 参数简要说明
+
+ `--version x.x.x`：设置发布版本号
+ `--no-build`：跳过 C++ 编译，仅做打包（二进制已编译好时用）
+ `--make-update`：开启差分更新包生成，输出全量包 + 差分包
+ `--old <dir>`：上一个正式版本目录，用于文件对比生成补丁
+ `--base-dir <dir>`：全局基准目录，固定填写 `build_release_1.0.0`
+ `--update-log`：版本更新日志，换行使用 `\n`
+ `--force-update`：开启强制更新标记，客户端强制升级
+
 
 ## 许可证
 MIT License，详情查看仓库根目录 `LICENSE` 文件。
