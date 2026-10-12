@@ -2,7 +2,7 @@
 [English](../README.md)｜[日本語](ja.md)｜[한국어](ko.md)｜[Русский](ru.md)｜[Français](fr.md)｜[Deutsch](de.md)｜[Español](es.md)｜[Português](pt.md)｜[简体中文](zh.md)｜[繁體中文](tw.md)
 
 
-💖 Apoya este proyecto: [Ko‑fi](https://ko‑fi.com/edenls)
+💖 Apoya este proyecto: [Ko‑fi](https://ko-fi.com/edenls)
 
 
 # SnapOCR
@@ -239,7 +239,7 @@ Licencia MIT, consulta el archivo `LICENSE` del directorio raíz.
 ## Apoya el proyecto
 
 SnapOCR es totalmente de código abierto y gratuito para uso personal. Si encuentras esta herramienta útil, puedes apoyar el desarrollo continuo voluntariamente a través de Ko‑fi:
-👉 [https://ko‑fi.com/edenls](https://ko%E2%80%91fi.com/edenls)
+👉 [https://ko-fi.com/edenls](https://ko%E2%80%91fi.com/edenls)
 
 ## Contacto y comentarios
 
