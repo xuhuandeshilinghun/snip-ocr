@@ -38,7 +38,7 @@ QString init_language(const QString& lang) {
 
 void set_language(const QString& lang) {
     static const QStringList supported = {
-        "zh_CN", "zh_TW", "en_US", "ja", "ko",
+        "zh_CN", "tw", "en_US", "ja", "ko",
         "de", "fr", "es", "pt", "ru"
     };
     if (supported.contains(lang)) {

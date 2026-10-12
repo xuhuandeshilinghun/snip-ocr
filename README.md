@@ -1,7 +1,7 @@
 <div align="center">
 
 **Readme Language / Language：**
-[English](./README.md)｜[日本語](./i18n/README_ja.md)｜[한국어](./i18n/README_ko.md)｜[Русский](./i18n/README_ru.md)｜[Français](./i18n/README_fr.md)｜[Deutsch](./i18n/README_de.md)｜[Español](./i18n/README_es.md)｜[Português](./i18n/README_pt.md)｜[简体中文](./i18n/README_zh.md)｜[繁體中文](./i18n/README_zh_TW.md)
+[English](./README.md)｜[日本語](./i18n/ja.md)｜[한국어](./i18n/ko.md)｜[Русский](./i18n/ru.md)｜[Français](./i18n/fr.md)｜[Deutsch](./i18n/de.md)｜[Español](./i18n/es.md)｜[Português](./i18n/pt.md)｜[简体中文](./i18n/zh.md)｜[繁體中文](./i18n/tw.md)
 
 
 

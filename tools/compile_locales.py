@@ -23,7 +23,7 @@ OUTPUT_DIRS = [
     Path(__file__).parent.parent / "build_release_1.0.0" / "locales",
 ]
 
-LANGS = ["zh_CN", "zh_TW", "en_US", "ja", "ko", "de", "fr", "es", "pt", "ru"]
+LANGS = ["zh_CN", "tw", "en_US", "ja", "ko", "de", "fr", "es", "pt", "ru"]
 
 
 def compile_lang(lang_id):

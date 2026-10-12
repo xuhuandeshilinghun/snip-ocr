@@ -173,7 +173,7 @@ void SettingsDialog::buildGeneralTab()
     m_comboLang = new QComboBox(page);
     m_comboLang->setMinimumWidth(200);
     m_comboLang->addItem(QStringLiteral("简体中文"), "zh_CN");
-    m_comboLang->addItem(QStringLiteral("繁體中文"), "zh_TW");
+    m_comboLang->addItem(QStringLiteral("繁體中文"), "tw");
     m_comboLang->addItem(QStringLiteral("English"), "en_US");
     m_comboLang->addItem(QStringLiteral("日本語"), "ja");
     m_comboLang->addItem(QStringLiteral("한국어"), "ko");

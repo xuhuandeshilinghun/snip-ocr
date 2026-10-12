@@ -1,5 +1,5 @@
 **Idioma del Readme / Readme Language：**
-[English](../README.md)｜[日本語](README_ja.md)｜[한국어](README_ko.md)｜[Русский](README_ru.md)｜[Français](README_fr.md)｜[Deutsch](README_de.md)｜[Español](README_es.md)｜[Português](README_pt.md)｜[简体中文](README_zh.md)｜[繁體中文](README_zh_TW.md)
+[English](../README.md)｜[日本語](ja.md)｜[한국어](ko.md)｜[Русский](ru.md)｜[Français](fr.md)｜[Deutsch](de.md)｜[Español](es.md)｜[Português](pt.md)｜[简体中文](zh.md)｜[繁體中文](tw.md)
 
 
 💖 Apoya este proyecto: [Ko‑fi](https://ko‑fi.com/edenls)

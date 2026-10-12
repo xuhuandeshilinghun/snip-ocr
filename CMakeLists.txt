@@ -176,8 +176,8 @@ add_custom_command(TARGET SnipOCR POST_BUILD
         "${CMAKE_SOURCE_DIR}/resources/locales/zh_CN.bin"
         "$<TARGET_FILE_DIR:SnipOCR>/locales/zh_CN.bin"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_SOURCE_DIR}/resources/locales/zh_TW.bin"
-        "$<TARGET_FILE_DIR:SnipOCR>/locales/zh_TW.bin"
+        "${CMAKE_SOURCE_DIR}/resources/locales/tw.bin"
+        "$<TARGET_FILE_DIR:SnipOCR>/locales/tw.bin"
     COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:SnipOCR>/img"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${CMAKE_SOURCE_DIR}/resources/img/img_res.bin"
