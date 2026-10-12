@@ -1,8 +1,7 @@
 <div align="center">
 
 **Readme Language / Langue：**
-[English](../README.md)｜[日本語](README_ja.md)｜[한국어](README_ko.md)｜[Русский](README_ru.md)｜[Français](README_fr.md)｜[Deutsch](README_de.md)｜[简体中文](README_zh.md)｜[繁體中文](README_zh_TW.md)
-
+[English](../README.md)｜[日本語](README_ja.md)｜[한국어](README_ko.md)｜[Русский](README_ru.md)｜[Français](README_fr.md)｜[Deutsch](README_de.md)｜[Español](README_es.md)｜[Português](README_pt.md)｜[简体中文](README_zh.md)｜[繁體中文](README_zh_TW.md)
 
 
 
@@ -75,7 +74,7 @@ Développé avec les API natives Windows et Qt6. Il prend en charge les écrans 
 ## Aperçu
 | Zone de capture | Annotation autocollant | Résultat OCR |
 | --- | --- | --- |
-| ![capture](./docs/images/capture.png) | ![sticker](./docs/images/sticker.png) | ![ocr](./docs/images/ocr.png) |
+| ![capture](../docs/images/capture.png) | ![sticker](../docs/images/sticker.png) | ![ocr](../docs/images/ocr.png) |
 
 ## Téléchargement et installation
 1. Obtenez la dernière version sur [Releases](https://github.com/xuhuandeshilinghun/snip‑ocr/releases) : `SnapOCR‑<version>‑win64.zip`

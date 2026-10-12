@@ -1,8 +1,7 @@
 <div align="center">
 
 **Readme Language / Язык：**
-[English](../README.md)｜[日本語](README_ja.md)｜[한국어](README_ko.md)｜[Русский](README_ru.md)｜[Français](README_fr.md)｜[Deutsch](README_de.md)｜[简体中文](README_zh.md)｜[繁體中文](README_zh_TW.md)
-
+[English](../README.md)｜[日本語](README_ja.md)｜[한국어](README_ko.md)｜[Русский](README_ru.md)｜[Français](README_fr.md)｜[Deutsch](README_de.md)｜[Español](README_es.md)｜[Português](README_pt.md)｜[简体中文](README_zh.md)｜[繁體中文](README_zh_TW.md)
 
 
 💖 Поддержать проект: [Ko‑fi](https://ko-fi.com/edenls)
@@ -74,7 +73,7 @@ SnapOCR — это открытая универсальная настольн�
 ## Предпросмотр
 | Область захвата | Аннотация наклейки | Результат OCR |
 | --- | --- | --- |
-| ![capture](./docs/images/capture.png) | ![sticker](./docs/images/sticker.png) | ![ocr](./docs/images/ocr.png) |
+| ![capture](../docs/images/capture.png) | ![sticker](../docs/images/sticker.png) | ![ocr](../docs/images/ocr.png) |
 
 ## Загрузка и установка
 1. Получите последнюю версию из раздела [Releases](https://github.com/xuhuandeshilinghun/snip‑ocr/releases): `SnapOCR‑<version>‑win64.zip`

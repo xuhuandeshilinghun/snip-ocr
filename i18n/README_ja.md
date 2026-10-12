@@ -1,7 +1,7 @@
 <div align="center">
 
 **Readme Language / 言語：**
-[English](../README.md)｜[日本語](README_ja.md)｜[한국어](README_ko.md)｜[Русский](README_ru.md)｜[Français](README_fr.md)｜[Deutsch](README_de.md)｜[简体中文](README_zh.md)｜[繁體中文](README_zh_TW.md)
+[English](../README.md)｜[日本語](README_ja.md)｜[한국어](README_ko.md)｜[Русский](README_ru.md)｜[Français](README_fr.md)｜[Deutsch](README_de.md)｜[Español](README_es.md)｜[Português](README_pt.md)｜[简体中文](README_zh.md)｜[繁體中文](README_zh_TW.md)
 
 
 💖 プロジェクトを支援する: [Ko‑fi](https://ko-fi.com/edenls)
@@ -73,7 +73,7 @@ SnapOCR は Windows 10 / 11 x64 向けのオープンソース統合デスクト
 ## プレビュー
 | キャプチャ領域 | ステッカー注釈 | OCR結果 |
 | --- | --- | --- |
-| ![capture](./docs/images/capture.png) | ![sticker](./docs/images/sticker.png) | ![ocr](./docs/images/ocr.png) |
+| ![capture](../docs/images/capture.png) | ![sticker](../docs/images/sticker.png) | ![ocr](../docs/images/ocr.png) |
 
 ## ダウンロードとインストール
 1. [Releases](https://github.com/xuhuandeshilinghun/snip‑ocr/releases) から最新版を取得：`SnapOCR‑<version>‑win64.zip`

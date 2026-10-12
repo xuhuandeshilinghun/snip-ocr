@@ -1,7 +1,8 @@
 ﻿<div align="center">
 
 **Readme Language / 语言：**
-[English](../README.md)｜[日本語](README_ja.md)｜[한국어](README_ko.md)｜[Русский](README_ru.md)｜[Français](README_fr.md)｜[Deutsch](README_de.md)｜[简体中文](README_zh.md)｜[繁體中文](README_zh_TW.md)
+[English](../README.md)｜[日本語](README_ja.md)｜[한국어](README_ko.md)｜[Русский](README_ru.md)｜[Français](README_fr.md)｜[Deutsch](README_de.md)｜[Español](README_es.md)｜[Português](README_pt.md)｜[简体中文](README_zh.md)｜[繁體中文](README_zh_TW.md)
+
 
 
 💖 Support this project / 支持本项目：[Ko‑fi](https://ko-fi.com/edenls)
@@ -9,16 +10,11 @@
 </div>
 
 # SnapOCR
-> High‑performance screenshot, desktop sticker and offline OCR utility built on C++17 / Qt6 for Windows platform.
-
-
-
-
-
+> 一款基于 C++17 / Qt6 开发、面向 Windows 平台的高性能截图、桌面贴图与离线OCR工具。
 
 
 SnapOCR 是面向 Windows 10 / 11 x64 平台的开源桌面一体化工具，集成高性能截图、桌面贴图悬浮预览、图片标注、多语言离线OCR识别、延时循环截图、自动更新全套能力。
-**软件界面支持语言：中文、繁体、英文、日文、韩文、德文、法文、俄文；同时支持上述多语种OCR文字识别。**
+**软件界面支持语言：中文、繁体、英文、日文、韩文、德文、法文、俄文、西班牙文、葡萄牙文；同时支持上述多语种OCR文字识别。**
 全部图像与文字识别运算**在本地设备完成，不会将截图上传云端**，注重用户隐私。适合办公摘录资料、阅读翻译辅助、网页文档文字提取、程序员素材截取、教学演示截图标注等各类场景。
 程序采用原生Windows API结合Qt6开发，支持高DPI多显示器环境，提供浅色/深色两套主题，完整的国际化多语言UI，常驻系统托盘后台运行。
 
@@ -75,7 +71,7 @@ SnapOCR 是面向 Windows 10 / 11 x64 平台的开源桌面一体化工具，集
 ## 界面预览
 | 截图选区 | 贴图标注 | OCR 结果 |
 | --- | --- | --- |
-| ![截图选区](docs/images/capture.png) | ![贴图标注](docs/images/sticker.png) | ![OCR 结果](docs/images/ocr.png) |
+| ![截图选区](../docs/images/capture.png) | ![贴图标注](../docs/images/sticker.png) | ![OCR 结果](../docs/images/ocr.png) |
 
 ## 下载与安装
 1. 前往 [Releases](https://github.com/xuhuandeshilinghun/snip‑ocr/releases) 下载最新发行包：`SnapOCR‑<version>‑win64.zip`

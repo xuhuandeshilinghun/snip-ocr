@@ -1,9 +1,7 @@
 <div align="center">
 
 **Readme Language / 언어：**
-[English](../README.md)｜[日本語](README_ja.md)｜[한국어](README_ko.md)｜[Русский](README_ru.md)｜[Français](README_fr.md)｜[Deutsch](README_de.md)｜[简体中文](README_zh.md)｜[繁體中文](README_zh_TW.md)
-
-
+[English](../README.md)｜[日本語](README_ja.md)｜[한국어](README_ko.md)｜[Русский](README_ru.md)｜[Français](README_fr.md)｜[Deutsch](README_de.md)｜[Español](README_es.md)｜[Português](README_pt.md)｜[简体中文](README_zh.md)｜[繁體中文](README_zh_TW.md)
 
 
 💖 프로젝트 지원: [Ko‑fi](https://ko-fi.com/edenls)
@@ -75,7 +73,7 @@ SnapOCR은 Windows 10 / 11 x64용 오픈소스 올인원 데스크톱 유틸리�
 ## 미리보기
 | 캡처 영역 | 스티커 주석 | OCR 결과 |
 | --- | --- | --- |
-| ![capture](./docs/images/capture.png) | ![sticker](./docs/images/sticker.png) | ![ocr](./docs/images/ocr.png) |
+| ![capture](../docs/images/capture.png) | ![sticker](../docs/images/sticker.png) | ![ocr](../docs/images/ocr.png) |
 
 ## 다운로드 및 설치
 1. [Releases](https://github.com/xuhuandeshilinghun/snip‑ocr/releases) 에서 최신 릴리즈를 받으세요: `SnapOCR‑<version>‑win64.zip`
