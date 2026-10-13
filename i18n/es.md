@@ -5,11 +5,11 @@
 💖 Apoya este proyecto: [Ko‑fi](https://ko-fi.com/edenls)
 
 
-# SnapOCR
+# SnipOCR
 
 > Utilidad de escritorio de alto rendimiento para capturas de pantalla, pegatinas de escritorio y reconocimiento OCR sin conexión, desarrollada en C++17 / Qt6 para la plataforma Windows.
 
-SnapOCR es una utilidad de escritorio todo‑en‑uno de código abierto para Windows 10 / 11 x64. Integra capturas de pantalla de alto rendimiento, vista previa flotante de pegatinas de escritorio, anotación de imágenes, reconocimiento OCR multidioma sin conexión, capturas retardadas en bucle y capacidades de actualización automática.
+SnipOCR es una utilidad de escritorio todo‑en‑uno de código abierto para Windows 10 / 11 x64. Integra capturas de pantalla de alto rendimiento, vista previa flotante de pegatinas de escritorio, anotación de imágenes, reconocimiento OCR multidioma sin conexión, capturas retardadas en bucle y capacidades de actualización automática.
 **Idiomas admitidos en la interfaz: chino simplificado, chino tradicional, inglés, japonés, coreano, alemán, francés, ruso; el reconocimiento de texto OCR está disponible para todos los idiomas mencionados.**
 
 Todo el procesamiento de imágenes y el reconocimiento de texto se ejecutan **localmente en tu dispositivo. Las capturas de pantalla nunca se suben a la nube, protegiendo tu privacidad.**
@@ -95,10 +95,10 @@ Desarrollado con API nativas de Windows y Qt6. Es compatible con configuraciones
 
 ## Descarga e instalación
 
-1. Obtén la última versión desde [Releases](https://github.com/xuhuandeshilinghun/snip%E2%80%91ocr/releases): `SnapOCR‑<version>‑win64.zip`
+1. Obtén la última versión desde [Releases](https://github.com/xuhuandeshilinghun/snip%E2%80%91ocr/releases): `SnipOCR‑<version>‑win64.zip`
 2. Extrae el archivo comprimido en cualquier carpeta local. Software portátil, no requiere instalador.
 3. Descarga el archivo comprimido independiente del modelo OCR y descomprímelo en la subcarpeta `model/` del programa.
-4. Ejecuta `SnapOCR.exe`.
+4. Ejecuta `SnipOCR.exe`.
 
 > 
 > **Requisito obligatorio del sistema: Windows 10 / Windows 11 x64**
@@ -243,12 +243,14 @@ python tools/make_release.py --version 1.0.1 --make-update --old build_release_1
 > Los archivos generados por la compilación se encuentran en `build_release_<version>`. Sube los archivos ZIP de esta carpeta a GitHub Releases.
 
 ## Licencia
-
-Licencia MIT, consulta el archivo `LICENSE` del directorio raíz.
+SnapOCR está licenciado bajo **PolyForm Noncommercial License 1.0.0**.
+✅ Uso personal/no comercial es gratuito, puedes usar, modificar y compartir.
+⚠️ **Cualquier uso comercial (uso interno en empresas con fines de lucro, integración en software comercial, venta de redistribuciones) requiere una licencia comercial por separado del autor.**
+Contacta conmigo para autorización comercial.
 
 ## Apoya el proyecto
 
-SnapOCR es totalmente de código abierto y gratuito para uso personal. Si encuentras esta herramienta útil, puedes apoyar el desarrollo continuo voluntariamente a través de Ko‑fi:
+SnipOCR es totalmente de código abierto y gratuito para uso personal. Si encuentras esta herramienta útil, puedes apoyar el desarrollo continuo voluntariamente a través de Ko‑fi:
 👉 [https://ko-fi.com/edenls](https://ko%E2%80%91fi.com/edenls)
 
 ## Contacto y comentarios

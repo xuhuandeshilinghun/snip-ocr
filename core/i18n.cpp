@@ -1,4 +1,9 @@
-﻿#include "i18n.h"
+﻿/*
+ * SnipOCR Copyright (c) 2026 edenl
+ * Licensed under PolyForm Noncommercial License 1.0.0
+ * Commercial use requires separate authorization from the author.
+ */
+#include "i18n.h"
 #include "locale_res_loader.h"
 #include <QJsonObject>
 
@@ -38,7 +43,7 @@ QString init_language(const QString& lang) {
 
 void set_language(const QString& lang) {
     static const QStringList supported = {
-        "zh_CN", "tw", "en_US", "ja", "ko",
+        "zh_CN", "zh_TW", "en_US", "ja", "ko",
         "de", "fr", "es", "pt", "ru"
     };
     if (supported.contains(lang)) {

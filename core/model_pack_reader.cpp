@@ -1,4 +1,9 @@
-﻿#include "model_pack_reader.h"
+﻿/*
+ * SnipOCR Copyright (c) 2026 edenl
+ * Licensed under PolyForm Noncommercial License 1.0.0
+ * Commercial use requires separate authorization from the author.
+ */
+#include "model_pack_reader.h"
 #include "crypto.h"
 #include <QDataStream>
 #include <QDebug>

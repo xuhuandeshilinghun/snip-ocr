@@ -8,10 +8,10 @@
 
 </div>
 
-# SnapOCR
+# SnipOCR
 > C++17 / Qt6 で開発された Windows 向け高性能スクリーンショット、デスクトップステッカー、オフラインOCRユーティリティ
 
-SnapOCR は Windows 10 / 11 x64 向けのオープンソース統合デスクトップツールです。高性能スクリーンショット、デスクトップ浮遊ステッカープレビュー、画像注釈、多言語オフラインOCR認識、遅延ループスクリーンショット、自動アップデート機能を備えています。
+SnipOCR は Windows 10 / 11 x64 向けのオープンソース統合デスクトップツールです。高性能スクリーンショット、デスクトップ浮遊ステッカープレビュー、画像注釈、多言語オフラインOCR認識、遅延ループスクリーンショット、自動アップデート機能を備えています。
 
 **UI対応言語：簡体字中国語、繁体字中国語、英語、日本語、韓国語、ドイツ語、フランス語、ロシア語。上記すべての言語のOCR文字認識に対応します。**
 
@@ -87,10 +87,10 @@ SnapOCR は Windows 10 / 11 x64 向けのオープンソース統合デスクト
 | ![capture](../docs/images/capture.png) | ![sticker](../docs/images/sticker.png) | ![ocr](../docs/images/ocr.png) |
 
 ## ダウンロードとインストール
-1. [Releases](https://github.com/xuhuandeshilinghun/snip‑ocr/releases) から最新版を取得：`SnapOCR‑<version>‑win64.zip`
+1. [Releases](https://github.com/xuhuandeshilinghun/snip‑ocr/releases) から最新版を取得：`SnipOCR‑<version>‑win64.zip`
 2. 任意のローカルフォルダに解凍。インストーラ不要のポータブルソフトウェア。
 3. OCRモデルアーカイブを別途ダウンロードし、プログラム内`model/`フォルダへ解凍。
-4. `SnapOCR.exe`を実行。
+4. `SnipOCR.exe`を実行。
 
 > **必須環境：Windows 10 / Windows 11 x64**
 > OCRモデルはサイズが大きいためメインパッケージに同梱されません。
@@ -208,10 +208,13 @@ python tools/make_release.py --version 1.0.1 --make-update --old build_release_1
 
 
 ## ライセンス
-MIT License。ルートディレクトリの`LICENSE`ファイルを参照。
+SnapOCRは**PolyForm Noncommercial License 1.0.0**のライセンスの下で提供されています。
+✅ 個人・非営利利用は無料で、ご利用、修正、共有が可能です。
+⚠️ **営利目的の企業内使用、商用ソフトウェアへの統合、再配布販売などの商用利用には、著者からの別途の商用ライセンスが必要です。**
+商用ライセンスについてはご連絡ください。
 
 ## プロジェクト支援
-SnapOCRは個人利用に限り完全オープンソース・無料です。ツールが役に立った場合はKo‑fiから開発を支援できます：
+SnipOCRは個人利用に限り完全オープンソース・無料です。ツールが役に立った場合はKo‑fiから開発を支援できます：
 👉 [https://ko-fi.com/edenls](https://ko-fi.com/edenls)
 
 ## 連絡・フィードバック

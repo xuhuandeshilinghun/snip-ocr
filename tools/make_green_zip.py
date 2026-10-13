@@ -3,9 +3,9 @@
 """
 将 build_release_<version> 目录打包为绿色版（解压即用）zip 压缩包。
 
-绿色版结构（zip 内顶层为 SnapOCR-<version>/）：
-  SnapOCR-<version>/
-  ├── SnapOCR.exe
+绿色版结构（zip 内顶层为 SnipOCR-<version>/）：
+  SnipOCR-<version>/
+  ├── SnipOCR.exe
   ├── updater.exe          (若存在)
   ├── *.dll                (Qt / ONNX / OpenCV / VC 运行时)
   ├── .version.json
@@ -19,7 +19,7 @@
 
 说明:
   - 默认源目录为项目根下的 build_release_<version>
-  - 输出 zip 命名: SnapOCR-<version>-win64.zip
+  - 输出 zip 命名: SnipOCR-<version>-win64.zip
   - 自动排除 history/、model/、*.pdb 等非发布文件
 """
 import argparse
@@ -30,12 +30,12 @@ import time
 import zipfile
 from pathlib import Path
 
-README_TEMPLATE = """SnapOCR v{version} - Windows 绿色版
+README_TEMPLATE = """SnipOCR v{version} - Windows 绿色版
 ========================================
 
 使用方法:
-  1. 解压到任意非系统目录（如 D:\\SnapOCR）
-  2. 双击 SnapOCR.exe 运行
+  1. 解压到任意非系统目录（如 D:\\SnipOCR）
+  2. 双击 SnipOCR.exe 运行
   3. 首次使用需下载 OCR 模型包，解压到程序的 model/ 子目录
 
 系统要求:
@@ -59,7 +59,7 @@ def make_green_zip(src_dir: Path, out_zip: Path, version: str) -> bool:
         print(f"[ERROR] 源目录不存在: {src_dir}")
         return False
 
-    top_dir = f"SnapOCR-{version}"
+    top_dir = f"SnipOCR-{version}"
 
     files_to_pack = []
     for root, dirs, files in os.walk(src_dir):
@@ -110,7 +110,7 @@ def main():
     version = args.version.lstrip("vV")
     src_dir = Path(args.src).resolve() if args.src else (project_dir / f"build_release_{version}")
     out_dir = Path(args.out).resolve() if args.out else project_dir
-    out_zip = out_dir / f"SnapOCR-{version}-win64.zip"
+    out_zip = out_dir / f"SnipOCR-{version}-win64.zip"
 
     print("=" * 60)
     print(f"  SnipOCR 绿色版打包  v{version}")

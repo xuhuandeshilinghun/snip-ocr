@@ -9,10 +9,10 @@
 
 </div>
 
-# SnapOCR
+# SnipOCR
 > 基於 C++17 / Qt6 建構，適用於 Windows 平台的高效能截圖、桌面貼圖與離線 OCR 工具。
 
-SnapOCR 是面向 Windows 10 / 11 x64 平台的開源桌面整合工具，整合高效能截圖、桌面貼圖懸浮預覽、圖片標註、多語言離線OCR辨識、延遲循環截圖、自動更新完整功能。
+SnipOCR 是面向 Windows 10 / 11 x64 平台的開源桌面整合工具，整合高效能截圖、桌面貼圖懸浮預覽、圖片標註、多語言離線OCR辨識、延遲循環截圖、自動更新完整功能。
 **軟體介面支援語言：中文、繁體、英文、日文、韓文、德文、法文、俄文、西班牙文、葡萄牙文；同時支援上述多語言 OCR 文字辨識。**
 所有圖像與文字辨識運算**皆在本機裝置完成，不會將截圖上傳至雲端，重視使用者隱私。**適合辦公資料摘錄、閱讀翻譯輔助、網頁文件文字擷取、程式素材截取、教學演示截圖標註等各種場景。
 程式採用原生 Windows API 搭配 Qt6 開發，支援高 DPI 多螢幕環境，提供淺色/深色兩套主題，具備完整國際化多語言 UI，可常駐於系統列背景執行。
@@ -86,10 +86,10 @@ SnapOCR 是面向 Windows 10 / 11 x64 平台的開源桌面整合工具，整合
 | ![截圖選區](../docs/images/capture.png) | ![貼圖標註](../docs/images/sticker.png) | ![OCR 結果](../docs/images/ocr.png) |
 
 ## 下載與安裝
-1. 前往 [Releases](https://github.com/xuhuandeshilinghun/snip‑ocr/releases) 下載最新發行包：`SnapOCR‑<version>‑win64.zip`
+1. 前往 [Releases](https://github.com/xuhuandeshilinghun/snip‑ocr/releases) 下載最新發行包：`SnipOCR‑<version>‑win64.zip`
 2. 把壓縮檔完整解壓縮到任意本機資料夾，綠色軟體，不需要安裝程式。
 3. OCR 功能需要額外下載獨立模型包，解壓縮放置到程式目錄下的 `model/` 資料夾。
-4. 直接執行 `SnapOCR.exe` 啟動軟體。
+4. 直接執行 `SnipOCR.exe` 啟動軟體。
 
 > **系統硬性需求：Windows10 / Windows11 x64**
 > OCR 模型檔案體積較大，為縮減程式包大小，模型不會內建在主程式壓縮檔當中。
@@ -207,10 +207,13 @@ python tools/make_release.py --version 1.0.1 --make-update --old build_release_1
 
 
 ## 授權條款
-MIT License，詳情請參閱儲存庫根目錄的 `LICENSE` 檔案。
+SnapOCR依**PolyForm非商業授權條款1.0.0**授權。
+✅ 個人/非商業用途免費，您可以使用、修改和分享。
+⚠️ **任何商業用途（營利性公司內部使用、整合至商業軟件、出售重新分發版本）均需從作者處取得單獨的商業許可證。**
+如需商業授權，請與我聯繫。
 
 ## 支援專案
-SnapOCR 完全開源免費供個人使用。如果你覺得本工具對你有幫助，可以透過 Ko‑fi 自願贊助，協助後續版本迭代開發：
+SnipOCR 完全開源免費供個人使用。如果你覺得本工具對你有幫助，可以透過 Ko‑fi 自願贊助，協助後續版本迭代開發：
 👉 [https://ko-fi.com/edenls](https://ko-fi.com/edenls)
 
 ## 聯絡回報

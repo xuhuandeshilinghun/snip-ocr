@@ -1,4 +1,9 @@
-﻿#include "core/updater.h"
+﻿/*
+ * SnipOCR Copyright (c) 2026 edenl
+ * Licensed under PolyForm Noncommercial License 1.0.0
+ * Commercial use requires separate authorization from the author.
+ */
+#include "core/updater.h"
 #include "core/i18n.h"
 #include "core/ui_theme.h"
 #include "core/region_router.h"

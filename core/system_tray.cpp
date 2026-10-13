@@ -1,4 +1,9 @@
-﻿#include "system_tray.h"
+﻿/*
+ * SnipOCR Copyright (c) 2026 edenl
+ * Licensed under PolyForm Noncommercial License 1.0.0
+ * Commercial use requires separate authorization from the author.
+ */
+#include "system_tray.h"
 #include "config_manager.h"
 #include "i18n.h"
 #include "ui_theme.h"

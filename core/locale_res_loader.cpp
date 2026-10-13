@@ -1,4 +1,9 @@
-﻿#include "locale_res_loader.h"
+﻿/*
+ * SnipOCR Copyright (c) 2026 edenl
+ * Licensed under PolyForm Noncommercial License 1.0.0
+ * Commercial use requires separate authorization from the author.
+ */
+#include "locale_res_loader.h"
 #include "resource_helper.h"
 #include "crypto.h"
 #include <QFile>

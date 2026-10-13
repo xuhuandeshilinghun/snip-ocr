@@ -1,4 +1,9 @@
-﻿#include "crypto.h"
+﻿/*
+ * SnipOCR Copyright (c) 2026 edenl
+ * Licensed under PolyForm Noncommercial License 1.0.0
+ * Commercial use requires separate authorization from the author.
+ */
+#include "crypto.h"
 #include <windows.h>
 #include <bcrypt.h>
 #include <QRandomGenerator>

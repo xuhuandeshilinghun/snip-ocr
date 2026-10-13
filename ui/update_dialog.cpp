@@ -1,4 +1,9 @@
-﻿#include "ui/update_dialog.h"
+﻿/*
+ * SnipOCR Copyright (c) 2026 edenl
+ * Licensed under PolyForm Noncommercial License 1.0.0
+ * Commercial use requires separate authorization from the author.
+ */
+#include "ui/update_dialog.h"
 #include "core/updater.h"
 #include "core/i18n.h"
 #include "core/ui_theme.h"

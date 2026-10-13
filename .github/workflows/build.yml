@@ -1,4 +1,4 @@
-name: Build SnapOCR Windows
+name: Build SnipOCR Windows
 
 on:
   push:
@@ -20,8 +20,6 @@ env:
 jobs:
   build-windows:
     runs-on: windows-latest
-    env:
-      PYTHONIOENCODING: utf-8
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -120,8 +118,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SnapOCR-${{ steps.version.outputs.version }}-win64
-          path: SnapOCR-${{ steps.version.outputs.version }}-win64.zip
+          name: SnipOCR-${{ steps.version.outputs.version }}-win64
+          path: SnipOCR-${{ steps.version.outputs.version }}-win64.zip
           if-no-files-found: error
 
       - name: Upload release assets (on tag)
@@ -129,5 +127,5 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            SnapOCR-${{ steps.version.outputs.version }}-win64.zip
+            SnipOCR-${{ steps.version.outputs.version }}-win64.zip
           generate_release_notes: true
