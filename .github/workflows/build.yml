@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 name: Build SnipOCR Windows
 
+=======
+name: Build SnapOCR Windows
+>>>>>>> e07ba7e9c7b5ee827a7f28071f30e98f96bfb57b
 on:
   push:
     branches: [main, master]
@@ -10,16 +14,19 @@ on:
         description: '版本号（如 1.0.0），留空则从 .version.json 读取'
         required: false
         default: ''
-
 env:
   QT_VERSION: '6.8.3'
   QT_ARCH: 'win64_msvc2022_64'
   VS_VERSION: '2022'
   BUILD_TYPE: 'Release'
-
 jobs:
   build-windows:
     runs-on: windows-latest
+<<<<<<< HEAD
+=======
+    env:
+      PYTHONIOENCODING: utf-8
+>>>>>>> e07ba7e9c7b5ee827a7f28071f30e98f96bfb57b
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,10 +36,20 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install Python deps
+      # 获取3.11 python.exe完整绝对路径，存入全局环境变量PY_FULL
+      - name: Get full python path
+        shell: pwsh
         run: |
-          python -m pip install --upgrade pip
-          pip install pycryptodome requests
+          $pyPath = (Get-Command python).Source
+          Write-Host "Full python path: $pyPath"
+          echo "PY_FULL=$pyPath" >> $env:GITHUB_ENV
+
+      # 使用完整路径安装依赖，保证安装到3.11
+      - name: Install Python deps
+        shell: pwsh
+        run: |
+          & $env:PY_FULL -m pip install --upgrade pip
+          & $env:PY_FULL -m pip install pycryptodome requests
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -54,7 +71,6 @@ jobs:
           else:
               vj = json.loads(Path(".version.json").read_text(encoding="utf-8-sig"))
               ver = vj.get("latest_ver", "V0.0.0").strip().lstrip("vV")
-          # 若 git tag 是 vX.Y.Z 则优先用 tag
           tag = os.environ.get("GITHUB_REF_NAME", "")
           if re.match(r"^v\d+\.\d+\.\d+$", tag):
               ver = tag[1:]
@@ -71,49 +87,45 @@ jobs:
           path: third_party
           key: third-party-${{ runner.os }}-opencv4.10.0-ort1.18.1-${{ hashFiles('tools/setup_third_party.py') }}
 
+      # 全部使用完整路径调用python，不受PATH污染影响
       - name: Setup third party dependencies
         if: steps.cache-third-party.outputs.cache-hit != 'true'
-        shell: cmd
+        shell: pwsh
         run: |
-          python tools/setup_third_party.py
+          & $env:PY_FULL tools/setup_third_party.py
 
-      - name: Setup MSVC environment
+      - name: Compile locale resources
+        shell: pwsh
+        run: |
+          & $env:PY_FULL tools/compile_locales.py
+
+      - name: Pack image resources
+        shell: pwsh
+        run: |
+          & $env:PY_FULL tools/pack_img_res.py
+
+      # ========= MSVC、CMake Configure、Build 全部在同一个step内 =========
+      - name: CMake Configure & Build
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x64
-
-      - name: Compile locale resources
-        shell: cmd
-        run: |
-          python tools/compile_locales.py
-
-      - name: Pack image resources
-        shell: cmd
-        run: |
-          python tools/pack_img_res.py
-
-      - name: CMake Configure
-        shell: cmd
-        run: |
-          cmake -S . -B build -G "Visual Studio 17 2022" -A x64 ^
-            -DCMAKE_BUILD_TYPE=Release ^
-            -DCMAKE_PREFIX_PATH="%Qt6_DIR%" ^
-            -DOPENCV_LIBS=opencv_world4100
-
-      - name: Build
-        shell: cmd
-        run: |
-          cmake --build build --config Release -- /m /verbosity:minimal
+          run: |
+            cmake -S . -B build -G "Visual Studio 17 2022" -A x64 ^
+              -DCMAKE_BUILD_TYPE=Release ^
+              -DCMAKE_PREFIX_PATH="%Qt6_DIR%" ^
+              -DOPENCV_LIBS=opencv_world4100
+            if %errorlevel% neq 0 exit /b %errorlevel%
+            cmake --build build --config Release -- /m /verbosity:minimal
 
       - name: Collect release files
-        shell: cmd
+        shell: pwsh
         run: |
-          python tools/make_release.py --version ${{ steps.version.outputs.version }} --no-build
+          & $env:PY_FULL tools/make_release.py --version ${{ steps.version.outputs.version }} --no-build
 
       - name: Pack green zip
-        shell: cmd
+        shell: pwsh
         run: |
-          python tools/make_green_zip.py --version ${{ steps.version.outputs.version }}
+          & $env:PY_FULL tools/make_green_zip.py --version ${{ steps.version.outputs.version }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
