@@ -20,7 +20,7 @@ class QTimer;
 
 namespace cv { class Mat; }
 namespace sticker { class StickerWindow; }
-namespace snap { struct CaptureResult; }
+namespace Snip { struct CaptureResult; }
 
 // Main application: hidden window for signal relay and child window parenting.
 // Faithfully ports Python main.py SnipOCRApp class.
@@ -62,7 +62,7 @@ public:
 
 private:
     // Screenshot flow
-    void handleCaptureResult(const snap::CaptureResult& result);
+    void handleCaptureResult(const Snip::CaptureResult& result);
     void pinImage(const QImage& img, const QRect& rect, const QString& historyPath);
     void copyImage(const QImage& img);
     void saveImage(const QImage& img);

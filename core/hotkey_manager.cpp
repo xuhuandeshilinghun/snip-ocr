@@ -24,7 +24,7 @@ static constexpr int HOTMOD_SHIFT = 0x0004;
 static constexpr int HOTMOD_ALT   = 0x0001;
 static constexpr int HOTMOD_WIN   = 0x0008;
 
-// Diagnostic log file (snap-text_C/hotkey_debug.log) for verifying hook installation.
+// Diagnostic log file (Snip-text_C/hotkey_debug.log) for verifying hook installation.
 static void hotkeyLog(const QString& msg)
 {
     static QString logPath;
@@ -45,8 +45,8 @@ GlobalHotkeyManager::GlobalHotkeyManager(QObject* parent)
 {
     s_instance = this;
     loadHotkeys();
-    hotkeyLog(QStringLiteral("GlobalHotkeyManager constructed: snapVk=%1 pinVk=%2 ocrVk=%3 delayVk=%4")
-                .arg(m_snapshotVk).arg(m_pinVk).arg(m_ocrVk).arg(m_delayVk));
+    hotkeyLog(QStringLiteral("GlobalHotkeyManager constructed: SnipVk=%1 pinVk=%2 ocrVk=%3 delayVk=%4")
+                .arg(m_SnipshotVk).arg(m_pinVk).arg(m_ocrVk).arg(m_delayVk));
 }
 
 GlobalHotkeyManager::~GlobalHotkeyManager()
@@ -90,7 +90,7 @@ static int namedVk(const QString& up) {
     if (up == "RIGHT") return VK_RIGHT;
     if (up == "UP") return VK_UP;
     if (up == "DOWN") return VK_DOWN;
-    if (up == "PRINT" || up == "PRINTSCREEN" || up == "SYSRQ") return VK_SNAPSHOT;
+    if (up == "PRINT" || up == "PRINTSCREEN" || up == "SYSRQ") return VK_SnipSHOT;
     if (up == "SCROLLLOCK" || up == "SCROLL") return VK_SCROLL;
     if (up == "PAUSE" || up == "BREAK") return VK_PAUSE;
     if (up == "NUMLOCK") return VK_NUMLOCK;
@@ -163,13 +163,13 @@ void GlobalHotkeyManager::loadHotkeys()
             hk.insert(it.key(), QJsonValue::fromVariant(it.value()));
     }
 
-    // snapshot key: supports combo (Ctrl+K) or single key (F1)
-    QString snapStr = hk.value("snapshot").toString("F1");
-    if (snapStr.contains('+')) {
-        m_snapshotMods = parseCombo(snapStr, m_snapshotVk);
+    // Snipshot key: supports combo (Ctrl+K) or single key (F1)
+    QString SnipStr = hk.value("Snipshot").toString("F1");
+    if (SnipStr.contains('+')) {
+        m_SnipshotMods = parseCombo(SnipStr, m_SnipshotVk);
     } else {
-        m_snapshotMods = 0;
-        m_snapshotVk = parseSingleVk(snapStr);
+        m_SnipshotMods = 0;
+        m_SnipshotVk = parseSingleVk(SnipStr);
     }
 
     QString pinStr = hk.value("pin").toString("F2");
@@ -183,7 +183,7 @@ void GlobalHotkeyManager::loadHotkeys()
     QString ocrStr = hk.value("ocr").toString("Ctrl+Shift+O");
     m_ocrMods = parseCombo(ocrStr, m_ocrVk);
 
-    QString delayStr = hk.value("delay_snapshot").toString("Ctrl+Shift+D");
+    QString delayStr = hk.value("delay_Snipshot").toString("Ctrl+Shift+D");
     m_delayMods = parseCombo(delayStr, m_delayVk);
 }
 
@@ -225,8 +225,8 @@ void GlobalHotkeyManager::setEnabled(bool enabled)
 void GlobalHotkeyManager::reloadHotkeys()
 {
     loadHotkeys();
-    hotkeyLog(QStringLiteral("Hotkeys reloaded: snapVk=%1 pinVk=%2 ocrVk=%3 delayVk=%4")
-                .arg(m_snapshotVk).arg(m_pinVk).arg(m_ocrVk).arg(m_delayVk));
+    hotkeyLog(QStringLiteral("Hotkeys reloaded: SnipVk=%1 pinVk=%2 ocrVk=%3 delayVk=%4")
+                .arg(m_SnipshotVk).arg(m_pinVk).arg(m_ocrVk).arg(m_delayVk));
 }
 
 long long GlobalHotkeyManager::hookProc(int nCode, unsigned int wParam, long long lParam)
@@ -267,12 +267,12 @@ long long GlobalHotkeyManager::hookProc(int nCode, unsigned int wParam, long lon
             return true;
         };
 
-        // Snapshot
-        if (s_instance->m_snapshotVk != 0 && vk == s_instance->m_snapshotVk) {
-            if (checkMods(s_instance->m_snapshotMods)) {
-                hotkeyLog(QStringLiteral("snapshot triggered vk=%1").arg(vk));
+        // Snipshot
+        if (s_instance->m_SnipshotVk != 0 && vk == s_instance->m_SnipshotVk) {
+            if (checkMods(s_instance->m_SnipshotMods)) {
+                hotkeyLog(QStringLiteral("Snipshot triggered vk=%1").arg(vk));
                 QTimer::singleShot(0, s_instance, []() {
-                    if (s_instance) emit s_instance->snapshotTriggered();
+                    if (s_instance) emit s_instance->SnipshotTriggered();
                 });
                 return 1;
             }

@@ -38,7 +38,7 @@
 
 #pragma comment(lib, "dwmapi.lib")
 
-namespace snap {
+namespace Snip {
 
 // ===================== Win32 Window Enumeration =====================
 
@@ -432,8 +432,8 @@ void ScreenPreviewWin::paintEvent(QPaintEvent* e) {
         p.fillRect(rect(), overlay);
 
         if (!m_isDragging) {
-            if (!m_snapRect.isNull()) {
-                QRect r = m_snapRect;
+            if (!m_SnipRect.isNull()) {
+                QRect r = m_SnipRect;
                 if (r.top() > 0)
                     p.fillRect(0, 0, w, r.top(), overlay);
                 if (r.bottom() < h - 1)
@@ -670,8 +670,8 @@ void ScreenPreviewWin::mousePressEvent(QMouseEvent* e) {
     m_endPt = pos;
     m_isDragging = true;
     m_dragMoved = false;
-    // Re-detect snap rect at click position (don't clear it)
-    m_snapRect = findSnapRect(pos);
+    // Re-detect Snip rect at click position (don't clear it)
+    m_SnipRect = findSnipRect(pos);
     m_selRect = QRect(m_startPt, m_endPt).normalized();
     setCursor(Qt::CrossCursor);
     update();
@@ -681,9 +681,9 @@ void ScreenPreviewWin::mouseMoveEvent(QMouseEvent* e) {
     m_mousePos = e->pos();
     QPoint pos = e->pos();
 
-    // Window snapping (only when not dragging and no selection)
+    // Window Snipping (only when not dragging and no selection)
     if (!m_isDragging && !m_hasSelection) {
-        m_snapRect = findSnapRect(pos);
+        m_SnipRect = findSnipRect(pos);
         setCursor(Qt::CrossCursor);
         update();
         return;
@@ -695,7 +695,7 @@ void ScreenPreviewWin::mouseMoveEvent(QMouseEvent* e) {
         int dy = pos.y() - m_startPt.y();
         if (qAbs(dx) > 4 || qAbs(dy) > 4) {
             m_dragMoved = true;
-            m_snapRect = QRect();
+            m_SnipRect = QRect();
         }
         if (m_dragMoved) {
             m_endPt = pos;
@@ -720,7 +720,7 @@ void ScreenPreviewWin::mouseMoveEvent(QMouseEvent* e) {
             case Left:        r.setLeft(r.left() + delta.x()); break;
             default: break;
         }
-        snapSelectionToEdges(r, m_resizeHandle);  // Snipaste-style edge snapping
+        SnipSelectionToEdges(r, m_resizeHandle);  // Snipaste-style edge Snipping
         if (r.width() >= 5 && r.height() >= 5) {
             m_selRect = r.normalized();
         }
@@ -735,7 +735,7 @@ void ScreenPreviewWin::mouseMoveEvent(QMouseEvent* e) {
         int dx = pos.x() - m_moveStart.x();
         int dy = pos.y() - m_moveStart.y();
         QRect newRect = m_selRect.translated(dx, dy);
-        snapSelectionToEdges(newRect, None);  // Snipaste-style edge snapping
+        SnipSelectionToEdges(newRect, None);  // Snipaste-style edge Snipping
         if (newRect.left() >= 0 && newRect.top() >= 0 &&
             newRect.right() < width() && newRect.bottom() < height()) {
             m_selRect = newRect;
@@ -776,13 +776,13 @@ void ScreenPreviewWin::mouseReleaseEvent(QMouseEvent* e) {
 
     m_isDragging = false;
 
-    // Click (no drag movement) with snap rect -> select snapped window
-    if (!m_dragMoved && !m_snapRect.isNull()) {
-        m_selRect = m_snapRect;
+    // Click (no drag movement) with Snip rect -> select Snipped window
+    if (!m_dragMoved && !m_SnipRect.isNull()) {
+        m_selRect = m_SnipRect;
         m_hasSelection = true;
         m_startPt = m_selRect.topLeft();
         m_endPt = m_selRect.bottomRight();
-        m_snapRect = QRect();
+        m_SnipRect = QRect();
         setCursor(Qt::CrossCursor);
         showToolbar();
         update();
@@ -798,17 +798,17 @@ void ScreenPreviewWin::mouseReleaseEvent(QMouseEvent* e) {
     }
 
     m_hasSelection = true;
-    m_snapRect = QRect();
+    m_SnipRect = QRect();
     setCursor(Qt::CrossCursor);
     showToolbar();
     update();
 }
 
 void ScreenPreviewWin::keyPressEvent(QKeyEvent* e) {
-    // Tab: toggle snap mode (window <-> ui)
+    // Tab: toggle Snip mode (window <-> ui)
     if (e->key() == Qt::Key_Tab) {
-        m_snapMode = (m_snapMode == "window") ? "ui" : "window";
-        m_snapRect = QRect();
+        m_SnipMode = (m_SnipMode == "window") ? "ui" : "window";
+        m_SnipRect = QRect();
         update();
         e->accept();
         return;
@@ -864,9 +864,9 @@ void ScreenPreviewWin::updateCursor(const QPoint& pos) {
     }
 }
 
-// Snipaste-style edge snapping: snap selection edges to nearby window edges
+// Snipaste-style edge Snipping: Snip selection edges to nearby window edges
 // when resizing or moving the selection. Threshold = 8 px (configurable).
-void ScreenPreviewWin::snapSelectionToEdges(QRect& r, Handle handle) {
+void ScreenPreviewWin::SnipSelectionToEdges(QRect& r, Handle handle) {
     const int threshold = 8;
     // Collect candidate edges from all window rects + screen boundaries
     QVector<int> xEdges, yEdges;
@@ -876,13 +876,13 @@ void ScreenPreviewWin::snapSelectionToEdges(QRect& r, Handle handle) {
         yEdges.append(wr.rect.top());
         yEdges.append(wr.rect.bottom() + 1);
     }
-    // Also snap to screen boundaries
+    // Also Snip to screen boundaries
     xEdges.append(0);
     xEdges.append(width());
     yEdges.append(0);
     yEdges.append(height());
 
-    auto snapVal = [&](int val, const QVector<int>& edges) -> int {
+    auto SnipVal = [&](int val, const QVector<int>& edges) -> int {
         int best = val;
         int bestDist = threshold;
         for (int e : edges) {
@@ -895,46 +895,46 @@ void ScreenPreviewWin::snapSelectionToEdges(QRect& r, Handle handle) {
         return best;
     };
 
-    // Determine which edges to snap based on handle
-    bool snapLeft = (handle == TopLeft || handle == Left || handle == BottomLeft ||
+    // Determine which edges to Snip based on handle
+    bool SnipLeft = (handle == TopLeft || handle == Left || handle == BottomLeft ||
                      handle == None);  // None = moving whole selection
-    bool snapRight = (handle == TopRight || handle == Right || handle == BottomRight ||
+    bool SnipRight = (handle == TopRight || handle == Right || handle == BottomRight ||
                       handle == None);
-    bool snapTop = (handle == TopLeft || handle == Top || handle == TopRight ||
+    bool SnipTop = (handle == TopLeft || handle == Top || handle == TopRight ||
                     handle == None);
-    bool snapBottom = (handle == BottomLeft || handle == Bottom || handle == BottomRight ||
+    bool SnipBottom = (handle == BottomLeft || handle == Bottom || handle == BottomRight ||
                        handle == None);
 
-    if (snapLeft) {
-        int newVal = snapVal(r.left(), xEdges);
+    if (SnipLeft) {
+        int newVal = SnipVal(r.left(), xEdges);
         if (newVal != r.left()) r.setLeft(newVal);
     }
-    if (snapRight) {
-        int newVal = snapVal(r.right(), xEdges);
+    if (SnipRight) {
+        int newVal = SnipVal(r.right(), xEdges);
         if (newVal != r.right()) r.setRight(newVal);
     }
-    if (snapTop) {
-        int newVal = snapVal(r.top(), yEdges);
+    if (SnipTop) {
+        int newVal = SnipVal(r.top(), yEdges);
         if (newVal != r.top()) r.setTop(newVal);
     }
-    if (snapBottom) {
-        int newVal = snapVal(r.bottom(), yEdges);
+    if (SnipBottom) {
+        int newVal = SnipVal(r.bottom(), yEdges);
         if (newVal != r.bottom()) r.setBottom(newVal);
     }
 }
 
-// ===================== Window Snapping =====================
+// ===================== Window Snipping =====================
 
-QRect ScreenPreviewWin::findSnapRect(const QPoint& pos) {
+QRect ScreenPreviewWin::findSnipRect(const QPoint& pos) {
     // Throttle
-    if ((pos - m_lastSnapPos).manhattanLength() < 2) {
-        return m_snapRect;
+    if ((pos - m_lastSnipPos).manhattanLength() < 2) {
+        return m_SnipRect;
     }
-    m_lastSnapPos = pos;
+    m_lastSnipPos = pos;
 
     // In "ui" mode: edge detection only
-    if (m_snapMode == "ui") {
-        return edgeSnap(pos);
+    if (m_SnipMode == "ui") {
+        return edgeSnip(pos);
     }
 
     // Snipaste-style: use WindowFromPoint for precise control detection
@@ -994,10 +994,10 @@ QRect ScreenPreviewWin::findSnapRect(const QPoint& pos) {
     }
 
     // Final fallback: edge detection
-    return edgeSnap(pos);
+    return edgeSnip(pos);
 }
 
-QRect ScreenPreviewWin::edgeSnap(const QPoint& pos) {
+QRect ScreenPreviewWin::edgeSnip(const QPoint& pos) {
     if (m_srcImage.isNull()) m_srcImage = m_srcPix.toImage();
     if (m_srcImage.isNull()) return QRect();
 
@@ -1255,4 +1255,4 @@ CaptureResult startScreenCapture() {
     return result;
 }
 
-} // namespace snap
+} // namespace Snip

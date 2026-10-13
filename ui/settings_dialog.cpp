@@ -284,20 +284,20 @@ void SettingsDialog::buildControlTab()
     hform->setHorizontalSpacing(16);
     hform->setVerticalSpacing(12);
 
-    m_editSnap = new QKeySequenceEdit(hotkeyPage);
-    m_editSnap->setMinimumWidth(200);
-    connect(m_editSnap, &QKeySequenceEdit::keySequenceChanged, this, &SettingsDialog::onHotkeyChanged);
-    m_iconSnap = new QLabel(hotkeyPage);
-    m_iconSnap->setFixedSize(22, 22);
-    auto* snapRow = new QHBoxLayout();
-    snapRow->setSpacing(8);
-    snapRow->addWidget(m_editSnap, 1);
-    snapRow->addWidget(m_iconSnap);
-    auto* snapWidget = new QWidget(hotkeyPage);
-    snapWidget->setLayout(snapRow);
-    hform->addRow(I18n::t("settings.snapshot_hotkey",
+    m_editSnip = new QKeySequenceEdit(hotkeyPage);
+    m_editSnip->setMinimumWidth(200);
+    connect(m_editSnip, &QKeySequenceEdit::keySequenceChanged, this, &SettingsDialog::onHotkeyChanged);
+    m_iconSnip = new QLabel(hotkeyPage);
+    m_iconSnip->setFixedSize(22, 22);
+    auto* SnipRow = new QHBoxLayout();
+    SnipRow->setSpacing(8);
+    SnipRow->addWidget(m_editSnip, 1);
+    SnipRow->addWidget(m_iconSnip);
+    auto* SnipWidget = new QWidget(hotkeyPage);
+    SnipWidget->setLayout(SnipRow);
+    hform->addRow(I18n::t("settings.Snipshot_hotkey",
 
-            QStringLiteral("\xe6\x88\xaa\xe5\x9b\xbe\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae")), snapWidget);
+            QStringLiteral("\xe6\x88\xaa\xe5\x9b\xbe\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae")), SnipWidget);
 
     m_editPin = new QKeySequenceEdit(hotkeyPage);
     m_editPin->setMinimumWidth(200);
@@ -461,10 +461,10 @@ void SettingsDialog::loadValues()
         for (auto it = vm.constBegin(); it != vm.constEnd(); ++it)
             hk.insert(it.key(), QJsonValue::fromVariant(it.value()));
     }
-    m_editSnap->setKeySequence(QKeySequence(hk.value("snapshot").toString("F1")));
+    m_editSnip->setKeySequence(QKeySequence(hk.value("Snipshot").toString("F1")));
     m_editPin->setKeySequence(QKeySequence(hk.value("pin").toString("F2")));
     m_editOcr->setKeySequence(QKeySequence(hk.value("ocr").toString("Ctrl+Shift+O")));
-    m_editDelay->setKeySequence(QKeySequence(hk.value("delay_snapshot").toString("Ctrl+Shift+D")));
+    m_editDelay->setKeySequence(QKeySequence(hk.value("delay_Snipshot").toString("Ctrl+Shift+D")));
 
     
     QString ocrModelPath = QDir(QCoreApplication::applicationDirPath()).filePath("model/MediaOCR-Base-v1.mtk-model");
@@ -533,45 +533,45 @@ void SettingsDialog::onHotkeyChanged()
 
 void SettingsDialog::validateHotkeys()
 {
-    QString snap = m_editSnap->keySequence().toString();
+    QString Snip = m_editSnip->keySequence().toString();
     QString ocr = m_editOcr->keySequence().toString();
     QString delay = m_editDelay->keySequence().toString();
 
-    bool snapOk = !snap.isEmpty() && snap != ocr && snap != delay && !s_systemConflicts.contains(snap);
-    bool ocrOk = !ocr.isEmpty() && ocr != snap && ocr != delay && !s_systemConflicts.contains(ocr);
-    bool delayOk = !delay.isEmpty() && delay != snap && delay != ocr && !s_systemConflicts.contains(delay);
+    bool SnipOk = !Snip.isEmpty() && Snip != ocr && Snip != delay && !s_systemConflicts.contains(Snip);
+    bool ocrOk = !ocr.isEmpty() && ocr != Snip && ocr != delay && !s_systemConflicts.contains(ocr);
+    bool delayOk = !delay.isEmpty() && delay != Snip && delay != ocr && !s_systemConflicts.contains(delay);
 
-    m_iconSnap->setPixmap(snapOk ? m_pixmapOk : m_pixmapFail);
+    m_iconSnip->setPixmap(SnipOk ? m_pixmapOk : m_pixmapFail);
     m_iconOcr->setPixmap(ocrOk ? m_pixmapOk : m_pixmapFail);
     m_iconDelay->setPixmap(delayOk ? m_pixmapOk : m_pixmapFail);
 }
 
 QPair<bool, QString> SettingsDialog::checkConflicts() const
 {
-    QString snap = m_editSnap->keySequence().toString();
+    QString Snip = m_editSnip->keySequence().toString();
     QString ocr = m_editOcr->keySequence().toString();
     QString delay = m_editDelay->keySequence().toString();
 
-    if (snap.isEmpty())
-        return qMakePair(false, I18n::t("settings.hotkey_empty_snap",
+    if (Snip.isEmpty())
+        return qMakePair(false, I18n::t("settings.hotkey_empty_Snip",
                 QStringLiteral("\xe6\x88\xaa\xe5\x9b\xbe\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae\xe4\xb8\x8d\xe8\x83\xbd\xe4\xb8\xba\xe7\xa9\xba")));
     if (ocr.isEmpty())
         return qMakePair(false, I18n::t("settings.hotkey_empty_ocr",
                 QStringLiteral("OCR\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae\xe4\xb8\x8d\xe8\x83\xbd\xe4\xb8\xba\xe7\xa9\xba")));
 
-    if (snap == ocr)
+    if (Snip == ocr)
         return qMakePair(false, I18n::t("settings.hotkey_same",
-                QStringLiteral("\xe6\x88\xaa\xe5\x9b\xbe\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae\xe5\x92\x8cOCR\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae\xe4\xb8\x8d\xe8\x83\xbd\xe7\x9b\xb8\xe5\x90\x8c\n\xe5\xbd\x93\xe5\x89\x8d\xe9\x83\xbd\xe6\x98\xaf: {key}")).replace("{key}", snap));
-    if (snap == delay)
-        return qMakePair(false, I18n::t("settings.hotkey_same_snap_delay",
-                QStringLiteral("\xe6\x88\xaa\xe5\x9b\xbe\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae\xe5\x92\x8c\xe5\xbb\xb6\xe6\x97\xb6\xe6\x88\xaa\xe5\x9b\xbe\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae\xe4\xb8\x8d\xe8\x83\xbd\xe7\x9b\xb8\xe5\x90\x8c\n\xe5\xbd\x93\xe5\x89\x8d\xe9\x83\xbd\xe6\x98\xaf: {key}")).replace("{key}", snap));
+                QStringLiteral("\xe6\x88\xaa\xe5\x9b\xbe\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae\xe5\x92\x8cOCR\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae\xe4\xb8\x8d\xe8\x83\xbd\xe7\x9b\xb8\xe5\x90\x8c\n\xe5\xbd\x93\xe5\x89\x8d\xe9\x83\xbd\xe6\x98\xaf: {key}")).replace("{key}", Snip));
+    if (Snip == delay)
+        return qMakePair(false, I18n::t("settings.hotkey_same_Snip_delay",
+                QStringLiteral("\xe6\x88\xaa\xe5\x9b\xbe\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae\xe5\x92\x8c\xe5\xbb\xb6\xe6\x97\xb6\xe6\x88\xaa\xe5\x9b\xbe\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae\xe4\xb8\x8d\xe8\x83\xbd\xe7\x9b\xb8\xe5\x90\x8c\n\xe5\xbd\x93\xe5\x89\x8d\xe9\x83\xbd\xe6\x98\xaf: {key}")).replace("{key}", Snip));
     if (ocr == delay)
         return qMakePair(false, I18n::t("settings.hotkey_same_ocr_delay",
                 QStringLiteral("OCR\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae\xe5\x92\x8c\xe5\xbb\xb6\xe6\x97\xb6\xe6\x88\xaa\xe5\x9b\xbe\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae\xe4\xb8\x8d\xe8\x83\xbd\xe7\x9b\xb8\xe5\x90\x8c\n\xe5\xbd\x93\xe5\x89\x8d\xe9\x83\xbd\xe6\x98\xaf: {key}")).replace("{key}", ocr));
 
-    if (s_systemConflicts.contains(snap))
-        return qMakePair(false, I18n::t("settings.hotkey_sys_conflict_snap",
-                QStringLiteral("\xe6\x88\xaa\xe5\x9b\xbe\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae [{key}] \xe4\xb8\x8e Windows \xe7\xb3\xbb\xe7\xbb\x9f\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae\xe5\x86\xb2\xe7\xaa\x81:\n  {name}")).replace("{key}", snap));
+    if (s_systemConflicts.contains(Snip))
+        return qMakePair(false, I18n::t("settings.hotkey_sys_conflict_Snip",
+                QStringLiteral("\xe6\x88\xaa\xe5\x9b\xbe\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae [{key}] \xe4\xb8\x8e Windows \xe7\xb3\xbb\xe7\xbb\x9f\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae\xe5\x86\xb2\xe7\xaa\x81:\n  {name}")).replace("{key}", Snip));
     if (s_systemConflicts.contains(ocr))
         return qMakePair(false, I18n::t("settings.hotkey_sys_conflict_ocr",
                 QStringLiteral("OCR\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae [{key}] \xe4\xb8\x8e Windows \xe7\xb3\xbb\xe7\xbb\x9f\xe5\xbf\xab\xe6\x8d\xb7\xe9\x94\xae\xe5\x86\xb2\xe7\xaa\x81:\n  {name}")).replace("{key}", ocr));
@@ -602,10 +602,10 @@ void SettingsDialog::onSave()
     syncAutoStart(autoStart);
 
     QJsonObject hk;
-    hk["snapshot"] = m_editSnap->keySequence().toString();
+    hk["Snipshot"] = m_editSnip->keySequence().toString();
     hk["pin"] = m_editPin->keySequence().toString();
     hk["ocr"] = m_editOcr->keySequence().toString();
-    hk["delay_snapshot"] = m_editDelay->keySequence().toString();
+    hk["delay_Snipshot"] = m_editDelay->keySequence().toString();
     cfg.set("hotkey", hk);
 
     cfg.set("delay_seconds", m_comboDelay->currentData().toInt());

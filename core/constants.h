@@ -15,6 +15,6 @@ namespace Constants {
         ".png", ".jpg", ".jpeg", ".bmp", ".webp", ".tif", ".tiff", ".gif"
     };
 
-    inline const QString DEFAULT_SNAPSHOT_HOTKEY = "F1";
+    inline const QString DEFAULT_SnipSHOT_HOTKEY = "F1";
     inline const QString DEFAULT_OCR_HOTKEY = "Ctrl+Shift+O";
 }

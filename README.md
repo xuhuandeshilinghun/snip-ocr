@@ -38,7 +38,7 @@ Developed with native Windows APIs and Qt6. It supports high‑DPI multi‑monit
 ### 📷 Screenshot Module
 - **Global hotkey screenshot**: Implemented via Windows low‑level keyboard hook `WH_KEYBOARD_LL`. Trigger screenshot with one hotkey regardless of active window focus.
 - **Free region selection**: Drag mouse to draw selection rectangle with 8 resize control‑points. Arrow‑key fine‑tuning: 1‑pixel per step, `Shift + Arrow‑Key` for 10‑pixel movement for precise pixel selection.
-- **Window snap‑to‑edge**: Inspired by Snipaste. Selection edges auto‑snap to window borders with default 8‑pixel threshold for fast full‑window capture.
+- **Window Snip‑to‑edge**: Inspired by Snipaste. Selection edges auto‑Snip to window borders with default 8‑pixel threshold for fast full‑window capture.
 - **Accurate window & control detection**: Uses `WindowFromPoint` + `RealChildWindowFromPoint` to detect child controls such as buttons, input boxes and toolbars for direct control‑area selection.
 - **DWM real window bounds retrieval**: Calls `DwmGetWindowAttribute(DWMWA_EXTENDED_FRAME_BOUNDS)` to exclude window drop‑shadows and obtain actual rendered window dimensions.
 - **Pixel magnifier**: Magnifier overlay in capture mode, displaying RGB / HEX color values and screen coordinates. Toggle color format for color‑picking and pixel inspection.
@@ -208,9 +208,9 @@ python tools/make_release.py --version 1.0.1 --make-update --old build_release_1
 > Build outputs are placed under `build_release_<version>`. Upload the zip archives inside this folder to GitHub Releases.
 
 ## License
-SnapOCR is licensed under **PolyForm Noncommercial License 1.0.0**.
-> ✅ Personal / non-commercial use is free, you may use, modify and share.
-> ⚠️ **Any commercial use (for-profit company internal use, integration into commercial software, selling redistributions) requires a separate commercial license from the author.**
+SnipOCR is licensed under **PolyForm Noncommercial License 1.0.0**.
+- ✅ Personal / non-commercial use is free, you may use, modify and share.
+- ⚠️ **Any commercial use (for-profit company internal use, integration into commercial software, selling redistributions) requires a separate commercial license from the author.**
 > Contact me for commercial authorization.
 
 ## Support Project

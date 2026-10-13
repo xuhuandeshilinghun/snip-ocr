@@ -37,7 +37,7 @@ Entwickelt mit nativen Windows‑APIs und Qt6. Unterstützt Hoch‑DPI‑Mehrmon
 ### 📷 Screenshot‑Modul
 - **Globaler Hotkey‑Screenshot**: Realisiert über den Windows‑Low‑Level‑Tastatur‑Hook `WH_KEYBOARD_LL`. Der Screenshot‑Vorgang wird mit einem Hotkey unabhängig vom aktiven Fenster‑Fokus ausgelöst.
 - **Freie Bereichsauswahl**: Ziehe mit der Maus ein Auswahlrechteck mit 8 Größen‑Steuerpunkten. Feineinstellung über Pfeiltasten: 1‑Pixel‑Schritt, `Umschalt + Pfeiltaste` für 10‑Pixel‑Bewegung zur präzisen Pixel‑Auswahl.
-- **Fenster‑Snap‑to‑Edge**: Inspiriert von Snipaste. Auswahlränder schnappen automatisch an Fensterränder (Standard‑Schwelle 8 Pixel) für schnelle Vollfenster‑Aufnahmen.
+- **Fenster‑Snip‑to‑Edge**: Inspiriert von Snipaste. Auswahlränder schnappen automatisch an Fensterränder (Standard‑Schwelle 8 Pixel) für schnelle Vollfenster‑Aufnahmen.
 - **Genauige Fenster‑ und Steuerelement‑Erkennung**: Verwendet `WindowFromPoint` + `RealChildWindowFromPoint` zum Erkennen von Untersteuerelementen wie Schaltflächen, Eingabefeldern und Symbolleisten zur direkten Auswahl von Steuerelement‑Bereichen.
 - **DWM‑Abfrage echter Fenstergrenzen**: Ruft `DwmGetWindowAttribute(DWMWA_EXTENDED_FRAME_BOUNDS)` auf, um Fensterschatten auszuschließen und die tatsächliche gerenderte Fenstergröße zu ermitteln.
 - **Pixel‑Lupe**: Lupe‑Overlay im Aufnahmemodus mit Anzeige von RGB‑ / HEX‑Farbwerten und Bildschirmkoordinaten. Farbformat umschaltbar für Farbauswahl und Pixel‑Prüfung.
@@ -208,9 +208,9 @@ python tools/make_release.py --version 1.0.1 --make-update --old build_release_1
 > Die Build‑Ausgabedateien befinden sich unter `build_release_<version>`. Laden Sie die ZIP‑Archive aus diesem Ordner auf GitHub Releases hoch.
 
 ## Lizenz
-SnapOCR ist unter der **PolyForm Noncommercial License 1.0.0** lizenziert.
-> ✅ Privat-/Nichtkommerzieller Gebrauch ist frei, Sie können verwenden, modifizieren und teilen.
-> ⚠️ **Jede kommerzielle Nutzung (interne Nutzung durch Gewerkschaftsunternehmen, Integration in kommerzielle Software, Verkauf von Wiederverteilungen) erfordert eine separate kommerzielle Lizenz vom Autor.**
+SnipOCR ist unter der **PolyForm Noncommercial License 1.0.0** lizenziert.
+-  ✅ Privat-/Nichtkommerzieller Gebrauch ist frei, Sie können verwenden, modifizieren und teilen.
+-  ⚠️ **Jede kommerzielle Nutzung (interne Nutzung durch Gewerkschaftsunternehmen, Integration in kommerzielle Software, Verkauf von Wiederverteilungen) erfordert eine separate kommerzielle Lizenz vom Autor.**
 > Kontaktieren Sie mich für die kommerzielle Genehmigung.
 
 ## Projekt unterstützen

@@ -8,7 +8,7 @@
 #include "ui_theme.h"
 #include "config_manager.h"
 #include "resource_helper.h"
-#include "snap_ocr_app.h"
+#include "Snip_ocr_app.h"
 
 #include <QPainter>
 #include <QPainterPath>

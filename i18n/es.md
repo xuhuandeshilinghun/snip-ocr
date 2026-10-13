@@ -243,9 +243,9 @@ python tools/make_release.py --version 1.0.1 --make-update --old build_release_1
 > Los archivos generados por la compilación se encuentran en `build_release_<version>`. Sube los archivos ZIP de esta carpeta a GitHub Releases.
 
 ## Licencia
-SnapOCR está licenciado bajo **PolyForm Noncommercial License 1.0.0**.
-> ✅ Uso personal/no comercial es gratuito, puedes usar, modificar y compartir.
-> ⚠️ **Cualquier uso comercial (uso interno en empresas con fines de lucro, integración en software comercial, venta de redistribuciones) requiere una licencia comercial por separado del autor.**
+SnipOCR está licenciado bajo **PolyForm Noncommercial License 1.0.0**.
+-  ✅ Uso personal/no comercial es gratuito, puedes usar, modificar y compartir.
+-  ⚠️ **Cualquier uso comercial (uso interno en empresas con fines de lucro, integración en software comercial, venta de redistribuciones) requiere una licencia comercial por separado del autor.**
 > Contacta conmigo para autorización comercial.
 
 ## Apoya el proyecto

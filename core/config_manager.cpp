@@ -29,10 +29,10 @@ void ConfigManager::load() {
         {"theme", "dark"},
         {"language", "zh_CN"},
         {"hotkey", QJsonObject{
-            {"snapshot", "F1"},
+            {"Snipshot", "F1"},
             {"pin", "F2"},
             {"ocr", "Ctrl+Shift+O"},
-            {"delay_snapshot", "Ctrl+Shift+D"}
+            {"delay_Snipshot", "Ctrl+Shift+D"}
         }},
         {"delay_seconds", 5},
         {"delay_loop", false},

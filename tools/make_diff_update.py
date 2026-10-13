@@ -208,10 +208,10 @@ def main():
     diff_filename = diff_zip.name
 
     
-    gitee_full_url = f"https://gitee.com/edenl/snap-text-update/releases/download/v{new_version}/{full_filename}"
-    github_full_url = f"https://github.com/xuhuandeshilinghun/snap-text-update/releases/download/v{new_version}/{full_filename}"
-    gitee_diff_url = f"https://gitee.com/edenl/snap-text-update/releases/download/v{new_version}/{diff_filename}"
-    github_diff_url = f"https://github.com/xuhuandeshilinghun/snap-text-update/releases/download/v{new_version}/{diff_filename}"
+    gitee_full_url = f"https://gitee.com/edenl/Snip-text-update/releases/download/v{new_version}/{full_filename}"
+    github_full_url = f"https://github.com/xuhuandeshilinghun/Snip-text-update/releases/download/v{new_version}/{full_filename}"
+    gitee_diff_url = f"https://gitee.com/edenl/Snip-text-update/releases/download/v{new_version}/{diff_filename}"
+    github_diff_url = f"https://github.com/xuhuandeshilinghun/Snip-text-update/releases/download/v{new_version}/{diff_filename}"
 
     version_json = {
         "latest_ver": f"V{new_version}",

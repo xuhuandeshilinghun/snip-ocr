@@ -149,9 +149,9 @@ static bool kill_main_exe(const std::wstring& app_dir) {
     if (targetNorm.find(L"\\\\?\\") == 0)
         targetNorm = targetNorm.substr(4);
 
-    HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-    if (snapshot == INVALID_HANDLE_VALUE) {
-        log_err(L"CreateToolhelp32Snapshot failed");
+    HANDLE Snipshot = CreateToolhelp32Snipshot(TH32CS_SnipPROCESS, 0);
+    if (Snipshot == INVALID_HANDLE_VALUE) {
+        log_err(L"CreateToolhelp32Snipshot failed");
         return false;
     }
 
@@ -159,7 +159,7 @@ static bool kill_main_exe(const std::wstring& app_dir) {
     pe.dwSize = sizeof(pe);
 
     bool killed = false;
-    if (Process32FirstW(snapshot, &pe)) {
+    if (Process32FirstW(Snipshot, &pe)) {
         do {
             if (_wcsicmp(pe.szExeFile, APP_EXE_NAME) == 0) {
                 HANDLE hProc = OpenProcess(
@@ -189,9 +189,9 @@ static bool kill_main_exe(const std::wstring& app_dir) {
                     CloseHandle(hProc);
                 }
             }
-        } while (Process32NextW(snapshot, &pe));
+        } while (Process32NextW(Snipshot, &pe));
     }
-    CloseHandle(snapshot);
+    CloseHandle(Snipshot);
 
     if (killed) Sleep(2000);
     return killed;

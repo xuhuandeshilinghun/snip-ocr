@@ -72,16 +72,16 @@ void TrayManager::buildMenu()
         for (auto it = vm.constBegin(); it != vm.constEnd(); ++it)
             hk.insert(it.key(), QJsonValue::fromVariant(it.value()));
     }
-    QString snapKey = hk.value("snapshot").toString("F1");
+    QString SnipKey = hk.value("Snipshot").toString("F1");
     QString pinKey = hk.value("pin").toString("F2");
     QString ocrKey = hk.value("ocr").toString("Ctrl+Shift+O");
-    QString delayKey = hk.value("delay_snapshot").toString("Ctrl+Shift+D");
+    QString delayKey = hk.value("delay_Snipshot").toString("Ctrl+Shift+D");
 
     // Screenshot
-    auto* actSnap = new QAction(I18n::t("tray.snapshot", QStringLiteral("\xe6\x88\xaa\xe5\x9b\xbe")) +
-                                QStringLiteral(" (%1)").arg(snapKey), m_menu);
-    connect(actSnap, &QAction::triggered, this, &TrayManager::screenshotRequested);
-    m_menu->addAction(actSnap);
+    auto* actSnip = new QAction(I18n::t("tray.Snipshot", QStringLiteral("\xe6\x88\xaa\xe5\x9b\xbe")) +
+                                QStringLiteral(" (%1)").arg(SnipKey), m_menu);
+    connect(actSnip, &QAction::triggered, this, &TrayManager::screenshotRequested);
+    m_menu->addAction(actSnip);
 
     auto* actPin = new QAction(I18n::t("tray.pin", QStringLiteral("\xe8\xb4\xb4\xe5\x9b\xbe")) +
                                QStringLiteral(" (%1)").arg(pinKey), m_menu);
@@ -259,10 +259,10 @@ QString TrayManager::buildTooltipText() const
         for (auto it = vm.constBegin(); it != vm.constEnd(); ++it)
             hk.insert(it.key(), QJsonValue::fromVariant(it.value()));
     }
-    QString snapKey = hk.value("snapshot").toString("F1");
+    QString SnipKey = hk.value("Snipshot").toString("F1");
     QString ocrKey = hk.value("ocr").toString("Ctrl+Shift+O");
     QString title = I18n::t("app.title", "SnipOCR");
-    QString snapLabel = I18n::t("tray.screenshot_hotkey", "Screenshot hotkey");
+    QString SnipLabel = I18n::t("tray.screenshot_hotkey", "Screenshot hotkey");
     QString ocrLabel = I18n::t("tray.ocr_hotkey", "OCR hotkey");
     QString freeLabel = I18n::t("tray.free_version", "Free");
     
@@ -271,12 +271,12 @@ QString TrayManager::buildTooltipText() const
     if (hasModel) {
         return QStringLiteral("%1 V1.0.0 %2\n%3: %4\n%5: %6")
             .arg(title).arg(freeLabel)
-            .arg(snapLabel).arg(snapKey)
+            .arg(SnipLabel).arg(SnipKey)
             .arg(ocrLabel).arg(ocrKey);
     }
     return QStringLiteral("%1 V1.0.0 %2\n%3: %4")
         .arg(title).arg(freeLabel)
-        .arg(snapLabel).arg(snapKey);
+        .arg(SnipLabel).arg(SnipKey);
 }
 
 void TrayManager::showIcon()

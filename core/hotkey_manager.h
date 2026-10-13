@@ -24,7 +24,7 @@ public:
     void reloadHotkeys();
 
 signals:
-    void snapshotTriggered();
+    void SnipshotTriggered();
     void pinTriggered();
     void ocrTriggered();
     void delayTriggered();
@@ -37,8 +37,8 @@ private:
     void* m_hook = nullptr;   // HHOOK
     bool m_enabled = true;
 
-    int m_snapshotMods = 0;
-    int m_snapshotVk = 0;
+    int m_SnipshotMods = 0;
+    int m_SnipshotVk = 0;
     int m_pinMods = 0;
     int m_pinVk = 0;
     int m_ocrMods = 0;

@@ -15,7 +15,7 @@ from pathlib import Path
 def find_msbuild() -> str:
     
     
-    for env_key in ("MSBUILD_PATH", "SNAP_MSBUILD"):
+    for env_key in ("MSBUILD_PATH", "Snip_MSBUILD"):
         val = os.environ.get(env_key, "").strip()
         if val and Path(val).is_file():
             return val

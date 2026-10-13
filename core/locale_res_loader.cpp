@@ -25,7 +25,7 @@ static const QByteArray AES_KEY = QByteArray::fromHex(
 static QJsonObject _fallback_zh_cn() {
     return QJsonObject{
         {"app.title", "SnipOCR"},
-        {"tray.snapshot", "截图"},
+        {"tray.Snipshot", "截图"},
         {"tray.ocr", "截图OCR"},
         {"tray.delay_screenshot", "延时截图"},
         {"tray.preferences", "首选项"},

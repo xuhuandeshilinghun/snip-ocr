@@ -20,7 +20,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network Svg)
 
 # nlohmann/json (header-only)
 include_directories(${CMAKE_SOURCE_DIR}/third_party)
-# Allow includes like "core/xxx.h" / "ui/xxx.h" / "snap_ocr_app.h" from anywhere
+# Allow includes like "core/xxx.h" / "ui/xxx.h" / "Snip_ocr_app.h" from anywhere
 include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/core ${CMAKE_SOURCE_DIR}/ui)
 
 
@@ -50,7 +50,7 @@ set(MINIZIP_DIR "${CMAKE_SOURCE_DIR}/third_party/minizip")
 
 set(SOURCES
     main.cpp
-    snap_ocr_app.cpp
+    Snip_ocr_app.cpp
     core/crypto.cpp
     core/resource_helper.cpp
     core/config_manager.cpp
@@ -81,7 +81,7 @@ set(SOURCES
 )
 
 set(HEADERS
-    snap_ocr_app.h
+    Snip_ocr_app.h
     core/constants.h
     core/crypto.h
     core/resource_helper.h

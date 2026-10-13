@@ -2,7 +2,7 @@
 name: Build SnipOCR Windows
 
 =======
-name: Build SnapOCR Windows
+name: Build SnipOCR Windows
 >>>>>>> e07ba7e9c7b5ee827a7f28071f30e98f96bfb57b
 on:
   push:

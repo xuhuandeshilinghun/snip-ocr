@@ -24,7 +24,7 @@
 #include <QPair>
 #include <QByteArray>
 
-namespace snap {
+namespace Snip {
 
 enum class CaptureAction {
     OCR = 0,
@@ -59,7 +59,7 @@ protected:
     void leaveEvent(QEvent* e) override { QWidget::leaveEvent(e); }
 
 signals:
-    void actionTriggered(snap::CaptureAction action);
+    void actionTriggered(Snip::CaptureAction action);
 
 private:
     QHBoxLayout* m_layout;
@@ -88,7 +88,7 @@ public:
     ~ScreenPreviewWin() override;
 
 signals:
-    void captured(const QImage& image, const QRect& rect, snap::CaptureAction action);
+    void captured(const QImage& image, const QRect& rect, Snip::CaptureAction action);
     void cancelled();
 
 protected:
@@ -125,9 +125,9 @@ private:
     bool m_movingSelection = false;
 
     QVector<WinRectInfo> m_winRects;
-    QRect m_snapRect;
-    QPoint m_lastSnapPos = QPoint(-9999, -9999);
-    QString m_snapMode = "window";
+    QRect m_SnipRect;
+    QPoint m_lastSnipPos = QPoint(-9999, -9999);
+    QString m_SnipMode = "window";
 
     int m_magSize = 150;
     int m_magZoom = 8;
@@ -143,14 +143,14 @@ private:
     void loadMagnifierConfig();
     Handle hitTest(const QPoint& pos) const;
     void updateCursor(const QPoint& pos);
-    QRect findSnapRect(const QPoint& pos);
-    // Snipaste-style: snap selection edges to nearby window edges while resizing/moving
-    void snapSelectionToEdges(QRect& r, Handle handle);
-    QRect edgeSnap(const QPoint& pos);
+    QRect findSnipRect(const QPoint& pos);
+    // Snipaste-style: Snip selection edges to nearby window edges while resizing/moving
+    void SnipSelectionToEdges(QRect& r, Handle handle);
+    QRect edgeSnip(const QPoint& pos);
     void drawMagnifier(QPainter& p);
     void copyColorValue();
-    void onToolbarAction(snap::CaptureAction action);
-    void finishCapture(snap::CaptureAction action);
+    void onToolbarAction(Snip::CaptureAction action);
+    void finishCapture(Snip::CaptureAction action);
     void showToolbar();
     void closeAll();
     void forceForeground();
@@ -161,4 +161,4 @@ private:
 CaptureResult startScreenCapture();
 QVector<WinRectInfo> enumerateWindowRects();
 
-} // namespace snap
+} // namespace Snip

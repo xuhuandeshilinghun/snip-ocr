@@ -10,7 +10,7 @@
 #include "core/config_manager.h"
 #include "core/ui_theme.h"
 #include "core/img_res_loader.h"
-#include "snap_ocr_app.h"
+#include "Snip_ocr_app.h"
 #include <QTranslator>
 #include <QLibraryInfo>
 #include <QDir>

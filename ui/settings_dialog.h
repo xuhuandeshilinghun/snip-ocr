@@ -73,8 +73,8 @@ private:
     QLabel* m_labelOcrHint = nullptr;
 
     // Control tab - hotkey sub-tab
-    QKeySequenceEdit* m_editSnap = nullptr;
-    QLabel* m_iconSnap = nullptr;
+    QKeySequenceEdit* m_editSnip = nullptr;
+    QLabel* m_iconSnip = nullptr;
     QKeySequenceEdit* m_editPin = nullptr;
     QLabel* m_iconPin = nullptr;
     QKeySequenceEdit* m_editOcr = nullptr;

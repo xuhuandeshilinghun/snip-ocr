@@ -9,16 +9,16 @@
 namespace RegionRouter {
 
 
-static const QString GITEE_BASE = "https://gitee.com/edenl/snap-text-update";
+static const QString GITEE_BASE = "https://gitee.com/edenl/Snip-text-update";
 static const QString GITEE_ISSUES = GITEE_BASE + "/issues";
 static const QString GITEE_DOWNLOAD = GITEE_BASE + "/releases/download";
 static const QString GITEE_VERSION_JSON = GITEE_BASE + "/raw/master/version.json";
 
 
-static const QString GITHUB_BASE = "https://github.com/xuhuandeshilinghun/snap-text-update";
+static const QString GITHUB_BASE = "https://github.com/xuhuandeshilinghun/Snip-text-update";
 static const QString GITHUB_ISSUES = GITHUB_BASE + "/issues";
 static const QString GITHUB_DOWNLOAD = GITHUB_BASE + "/releases/download";
-static const QString GITHUB_VERSION_JSON = "https://raw.githubusercontent.com/xuhuandeshilinghun/snap-text-update/master/version.json";
+static const QString GITHUB_VERSION_JSON = "https://raw.githubusercontent.com/xuhuandeshilinghun/Snip-text-update/master/version.json";
 
 // Always return both URLs; caller probes in region-based order
 QStringList get_version_urls() {

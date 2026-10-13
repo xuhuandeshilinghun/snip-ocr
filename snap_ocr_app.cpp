@@ -1,4 +1,4 @@
-﻿#include "snap_ocr_app.h"
+﻿#include "Snip_ocr_app.h"
 #include "core/ui_theme.h"
 #include "core/i18n.h"
 #include "core/config_manager.h"
@@ -287,7 +287,7 @@ SnipOCRApp::SnipOCRApp(QWidget* parent)
     // delay-init hotkeys to ensure tray/Qt event loop is ready
     QTimer::singleShot(100, this, [this]() {
         m_hotkeyMgr = new GlobalHotkeyManager(this);
-        connect(m_hotkeyMgr, &GlobalHotkeyManager::snapshotTriggered,
+        connect(m_hotkeyMgr, &GlobalHotkeyManager::SnipshotTriggered,
                 this, &SnipOCRApp::doScreenshot);
         connect(m_hotkeyMgr, &GlobalHotkeyManager::pinTriggered,
                 this, &SnipOCRApp::doPinScreenshot);
@@ -343,7 +343,7 @@ void SnipOCRApp::doScreenshot()
         }
     }
     ::Sleep(50);
-    snap::CaptureResult result = snap::startScreenCapture();
+    Snip::CaptureResult result = Snip::startScreenCapture();
     // Restore WS_EX_TOPMOST
     sticker::StickerWindow::suspendTopmost(false);
     for (HWND hwnd : stickerHwnds) {
@@ -354,7 +354,7 @@ void SnipOCRApp::doScreenshot()
     if (m_hotkeyMgr) m_hotkeyMgr->setEnabled(true);
     m_capturing = false;
 
-    if (result.image.isNull() || result.action == snap::CaptureAction::CANCEL) return;
+    if (result.image.isNull() || result.action == Snip::CaptureAction::CANCEL) return;
     handleCaptureResult(result);
 }
 
@@ -376,7 +376,7 @@ void SnipOCRApp::doPinScreenshot()
         }
     }
     ::Sleep(50);
-    snap::CaptureResult result = snap::startScreenCapture();
+    Snip::CaptureResult result = Snip::startScreenCapture();
     // Restore WS_EX_TOPMOST
     sticker::StickerWindow::suspendTopmost(false);
     for (HWND hwnd : stickerHwnds) {
@@ -387,7 +387,7 @@ void SnipOCRApp::doPinScreenshot()
     if (m_hotkeyMgr) m_hotkeyMgr->setEnabled(true);
     m_capturing = false;
 
-    if (result.image.isNull() || result.action == snap::CaptureAction::CANCEL) return;
+    if (result.image.isNull() || result.action == Snip::CaptureAction::CANCEL) return;
     
     QString historyPath = saveHistory(result.image);
     pinImage(result.image, result.rect, historyPath);
@@ -411,7 +411,7 @@ void SnipOCRApp::doOcrScreenshot()
         }
     }
     ::Sleep(50);
-    snap::CaptureResult result = snap::startScreenCapture();
+    Snip::CaptureResult result = Snip::startScreenCapture();
     // Restore WS_EX_TOPMOST
     sticker::StickerWindow::suspendTopmost(false);
     for (HWND hwnd : stickerHwnds) {
@@ -422,7 +422,7 @@ void SnipOCRApp::doOcrScreenshot()
     if (m_hotkeyMgr) m_hotkeyMgr->setEnabled(true);
     m_capturing = false;
 
-    if (result.image.isNull() || result.action == snap::CaptureAction::CANCEL) return;
+    if (result.image.isNull() || result.action == Snip::CaptureAction::CANCEL) return;
     saveHistory(result.image);
     ocrImage(result.image);
 }
@@ -483,24 +483,24 @@ void SnipOCRApp::onDelayCancelled()
     }
 }
 
-void SnipOCRApp::handleCaptureResult(const snap::CaptureResult& result)
+void SnipOCRApp::handleCaptureResult(const Snip::CaptureResult& result)
 {
     const QImage& qimg = result.image;
     QString historyPath = saveHistory(qimg);
     switch (result.action) {
-    case snap::CaptureAction::PIN:
+    case Snip::CaptureAction::PIN:
         pinImage(qimg, result.rect, historyPath);
         break;
-    case snap::CaptureAction::COPY:
+    case Snip::CaptureAction::COPY:
         copyImage(qimg);
         break;
-    case snap::CaptureAction::SAVE:
+    case Snip::CaptureAction::SAVE:
         saveImage(qimg);
         break;
-    case snap::CaptureAction::OCR:
+    case Snip::CaptureAction::OCR:
         ocrImage(qimg);
         break;
-    case snap::CaptureAction::QR:
+    case Snip::CaptureAction::QR:
         qrImage(qimg);
         break;
     default:
@@ -1048,7 +1048,7 @@ QString SnipOCRApp::resolveModelPath() const
 {
     QString modelPath = QDir(QCoreApplication::applicationDirPath()).filePath("model/MediaOCR-Base-v1.mtk-model");
     if (!QFileInfo::exists(modelPath)) {
-        modelPath = "D:/Work/project/test/python/20260912/snap-text_C/model/MediaOCR-Base-v1.mtk-model";
+        modelPath = "D:/Work/project/test/python/20260912/Snip-text_C/model/MediaOCR-Base-v1.mtk-model";
     }
     return modelPath;
 }
@@ -1244,4 +1244,4 @@ void SnipOCRApp::keyPressEvent(QKeyEvent* e)
     QWidget::keyPressEvent(e);
 }
 
-#include "snap_ocr_app.moc"
+#include "Snip_ocr_app.moc"
