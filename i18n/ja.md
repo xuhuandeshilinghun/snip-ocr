@@ -21,6 +21,17 @@ SnapOCR は Windows 10 / 11 x64 向けのオープンソース統合デスクト
 ネイティブWindows APIとQt6を使用して開発。高DPIマルチモニタ環境に対応し、ライト/ダークテーマを搭載、完全な国際化多言語UIを備え、システムトレイからバックグラウンド実行可能です。
 
 ---
+## Demo
+![capture](../docs/images/gif/9.gif)
+![capture](../docs/images/gif/1.gif)
+![capture](../docs/images/gif/2.gif)
+![capture](../docs/images/gif/3.gif)
+![capture](../docs/images/gif/4.gif)
+![capture](../docs/images/gif/5.gif)
+![capture](../docs/images/gif/6.gif)
+![capture](../docs/images/gif/7.gif)
+![capture](../docs/images/gif/8.gif)
+
 ## 機能
 ### 📷 スクリーンショットモジュール
 - **グローバルホットキースクリーンショット**：Windows低レベルキーボードフック `WH_KEYBOARD_LL` を実装。アクティブウィンドウのフォーカスに関わらずホットキー一つでスクリーンショットを起動。

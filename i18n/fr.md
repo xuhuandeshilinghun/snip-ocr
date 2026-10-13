@@ -22,6 +22,19 @@ Adapté à l’extraction de documents professionnels, l’aide à la lecture et
 Développé avec les API natives Windows et Qt6. Il prend en charge les écrans multiples haute‑DPI, propose des thèmes clair / sombre, une interface entièrement internationalisée multilingue et peut s’exécuter en arrière‑plan depuis la barre‑des‑tâches système.
 
 ---
+## Demo
+![capture](../docs/images/gif/9.gif)
+![capture](../docs/images/gif/1.gif)
+![capture](../docs/images/gif/2.gif)
+![capture](../docs/images/gif/3.gif)
+![capture](../docs/images/gif/4.gif)
+![capture](../docs/images/gif/5.gif)
+![capture](../docs/images/gif/6.gif)
+![capture](../docs/images/gif/7.gif)
+![capture](../docs/images/gif/8.gif)
+
+
+
 ## Fonctionnalités
 ### 📷 Module de capture d’écran
 - **Capture d’écran par raccourci global** : implémentée via le hook clavier bas‑niveau Windows `WH_KEYBOARD_LL`. Déclenchez la capture d’écran avec un seul raccourci indépendamment de la fenêtre active.

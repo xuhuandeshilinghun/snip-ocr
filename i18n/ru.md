@@ -21,6 +21,17 @@ SnapOCR — это открытая универсальная настольн�
 Разработано с использованием нативных API Windows и Qt6. Поддерживает многомониторные конфигурации с высоким DPI, светлую и тёмную темы, полностью интернационализированный многоязычный интерфейс, может работать в фоновом режиме из системного трея.
 
 ---
+## Demo
+![capture](../docs/images/gif/9.gif)
+![capture](../docs/images/gif/1.gif)
+![capture](../docs/images/gif/2.gif)
+![capture](../docs/images/gif/3.gif)
+![capture](../docs/images/gif/4.gif)
+![capture](../docs/images/gif/5.gif)
+![capture](../docs/images/gif/6.gif)
+![capture](../docs/images/gif/7.gif)
+![capture](../docs/images/gif/8.gif)
+
 ## Возможности
 ### 📷 Модуль скриншотов
 - **Горячая клавиша для скриншота**: реализована через низкоуровневый хук клавиатуры Windows `WH_KEYBOARD_LL`. Запуск захвата экрана одной комбинацией клавиш независимо от активного окна.

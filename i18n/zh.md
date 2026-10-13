@@ -19,6 +19,18 @@ SnapOCR 是面向 Windows 10 / 11 x64 平台的开源桌面一体化工具，集
 程序采用原生Windows API结合Qt6开发，支持高DPI多显示器环境，提供浅色/深色两套主题，完整的国际化多语言UI，常驻系统托盘后台运行。
 
 ---
+
+## 演示
+![capture](../docs/images/gif/9.gif)
+![capture](../docs/images/gif/1.gif)
+![capture](../docs/images/gif/2.gif)
+![capture](../docs/images/gif/3.gif)
+![capture](../docs/images/gif/4.gif)
+![capture](../docs/images/gif/5.gif)
+![capture](../docs/images/gif/6.gif)
+![capture](../docs/images/gif/7.gif)
+![capture](../docs/images/gif/8.gif)
+
 ## 功能特性
 ### 📷 截图模块
 - **全局热键截图**：采用 Windows 低级键盘钩子 `WH_KEYBOARD_LL` 实现全局热键，无论当前窗口是否获得焦点，均可一键唤起截图。

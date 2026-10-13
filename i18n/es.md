@@ -19,6 +19,16 @@ Adecuado para extraer material de oficina, asistencia de lectura y traducción, 
 Desarrollado con API nativas de Windows y Qt6. Es compatible con configuraciones de varios monitores de alto‑DPI, ofrece temas claro / oscuro, interfaz de usuario completamente internacionalizada multidioma y puede ejecutarse en segundo plano desde la bandeja del sistema.
 
 ---
+## Demo
+![capture](../docs/images/gif/9.gif)
+![capture](../docs/images/gif/1.gif)
+![capture](../docs/images/gif/2.gif)
+![capture](../docs/images/gif/3.gif)
+![capture](../docs/images/gif/4.gif)
+![capture](../docs/images/gif/5.gif)
+![capture](../docs/images/gif/6.gif)
+![capture](../docs/images/gif/7.gif)
+![capture](../docs/images/gif/8.gif)
 
 ## Características
 

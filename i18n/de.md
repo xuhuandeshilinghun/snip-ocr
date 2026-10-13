@@ -22,6 +22,17 @@ Geeignet für die Extraktion von Büromaterialien, Lese‑ und Übersetzungshilf
 Entwickelt mit nativen Windows‑APIs und Qt6. Unterstützt Hoch‑DPI‑Mehrmonitor‑Konfigurationen, bietet Hell‑/Dunkel‑Designs, eine vollständig internationalisierte mehrsprachige Benutzeroberfläche und kann über das System‑Tray im Hintergrund ausgeführt werden.
 
 ---
+## Demo
+![capture](../docs/images/gif/9.gif)
+![capture](../docs/images/gif/1.gif)
+![capture](../docs/images/gif/2.gif)
+![capture](../docs/images/gif/3.gif)
+![capture](../docs/images/gif/4.gif)
+![capture](../docs/images/gif/5.gif)
+![capture](../docs/images/gif/6.gif)
+![capture](../docs/images/gif/7.gif)
+![capture](../docs/images/gif/8.gif)
+
 ## Funktionen
 ### 📷 Screenshot‑Modul
 - **Globaler Hotkey‑Screenshot**: Realisiert über den Windows‑Low‑Level‑Tastatur‑Hook `WH_KEYBOARD_LL`. Der Screenshot‑Vorgang wird mit einem Hotkey unabhängig vom aktiven Fenster‑Fokus ausgelöst.

@@ -23,6 +23,17 @@ Suitable for office material extraction, reading & translation assistance, web�
 Developed with native Windows APIs and Qt6. It supports high‑DPI multi‑monitor setups, provides light / dark themes, full internationalized multi‑language UI, and can run in the background from system tray.
 
 ---
+## Demo
+![capture](../docs/images/gif/9.gif)
+![capture](./docs/images/gif/1.gif)
+![capture](./docs/images/gif/2.gif)
+![capture](./docs/images/gif/3.gif)
+![capture](./docs/images/gif/4.gif)
+![capture](./docs/images/gif/5.gif)
+![capture](./docs/images/gif/6.gif)
+![capture](./docs/images/gif/7.gif)
+![capture](./docs/images/gif/8.gif)
+
 ## Features
 ### 📷 Screenshot Module
 - **Global hotkey screenshot**: Implemented via Windows low‑level keyboard hook `WH_KEYBOARD_LL`. Trigger screenshot with one hotkey regardless of active window focus.
