@@ -103,12 +103,16 @@ jobs:
 
       # CMake编译必须保留shell:cmd，VS环境
       - name: CMake Configure
-        shell: cmd
-        run: |
-          cmake -S . -B build -G "Visual Studio 17 2022" -A x64 ^
-            -DCMAKE_BUILD_TYPE=Release ^
-            -DCMAKE_PREFIX_PATH="%Qt6_DIR%" ^
-            -DOPENCV_LIBS=opencv_world4100
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          shell: cmd
+          run: |
+            cmake -S . -B build -G "Visual Studio 17 2022" -A x64 ^
+              -DCMAKE_BUILD_TYPE=Release ^
+              -DCMAKE_PREFIX_PATH="%Qt6_DIR%" ^
+              -DOPENCV_LIBS=opencv_world4100
+            cmake --build build --config Release -- /m /verbosity:minimal
 
       - name: Build
         shell: cmd
