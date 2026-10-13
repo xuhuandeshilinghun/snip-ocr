@@ -1,5 +1,4 @@
 name: Build SnapOCR Windows
-
 on:
   push:
     branches: [main, master]
@@ -10,13 +9,11 @@ on:
         description: '版本号（如 1.0.0），留空则从 .version.json 读取'
         required: false
         default: ''
-
 env:
   QT_VERSION: '6.8.3'
   QT_ARCH: 'win64_msvc2022_64'
   VS_VERSION: '2022'
   BUILD_TYPE: 'Release'
-
 jobs:
   build-windows:
     runs-on: windows-latest
@@ -31,10 +28,16 @@ jobs:
         with:
           python-version: '3.11'
 
+      # 仅本步骤使用pwsh，导出python完整路径给后续cmd使用
+      - name: Export python exe path
+        shell: pwsh
+        run: echo "PYTHON_EXE=$env:Python" >> $env:GITHUB_ENV
+
       - name: Install Python deps
+        shell: cmd
         run: |
-          python -m pip install --upgrade pip
-          pip install pycryptodome requests
+          "%PYTHON_EXE%" -m pip install --upgrade pip
+          "%PYTHON_EXE%" -m pip install pycryptodome requests
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -77,7 +80,7 @@ jobs:
         if: steps.cache-third-party.outputs.cache-hit != 'true'
         shell: cmd
         run: |
-          & $env:Python tools/setup_third_party.py
+          "%PYTHON_EXE%" tools/setup_third_party.py
 
       - name: Setup MSVC environment
         uses: ilammy/msvc-dev-cmd@v1
@@ -87,12 +90,12 @@ jobs:
       - name: Compile locale resources
         shell: cmd
         run: |
-          & $env:Python tools/compile_locales.py
+          "%PYTHON_EXE%" tools/compile_locales.py
 
       - name: Pack image resources
         shell: cmd
         run: |
-          & $env:Python tools/pack_img_res.py
+          "%PYTHON_EXE%" tools/pack_img_res.py
 
       - name: CMake Configure
         shell: cmd
@@ -110,12 +113,12 @@ jobs:
       - name: Collect release files
         shell: cmd
         run: |
-          & $env:Python tools/make_release.py --version ${{ steps.version.outputs.version }} --no-build
+          "%PYTHON_EXE%" tools/make_release.py --version ${{ steps.version.outputs.version }} --no-build
 
       - name: Pack green zip
         shell: cmd
         run: |
-          & $env:Python tools/make_green_zip.py --version ${{ steps.version.outputs.version }}
+          "%PYTHON_EXE%" tools/make_green_zip.py --version ${{ steps.version.outputs.version }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
