@@ -210,9 +210,9 @@ python tools/make_release.py --version 1.0.1 --make-update --old build_release_1
 
 ## Licence
 SnapOCR est sous licence **PolyForm Noncommercial License 1.0.0**.
-✅ Utilisation personnelle / non commerciale est gratuite, vous pouvez utiliser, modifier et partager.
-⚠️ **Toute utilisation commerciale (utilisation interne par une entreprise à but lucratif, intégration dans un logiciel commercial, vente de redistributions) nécessite une licence commerciale distincte de l'auteur.**
-Contactez-moi pour l'autorisation commerciale.
+> ✅ Utilisation personnelle / non commerciale est gratuite, vous pouvez utiliser, modifier et partager.
+> ⚠️ **Toute utilisation commerciale (utilisation interne par une entreprise à but lucratif, intégration dans un logiciel commercial, vente de redistributions) nécessite une licence commerciale distincte de l'auteur.**
+> Contactez-moi pour l'autorisation commerciale.
 
 ## Soutenir le projet
 SnipOCR est entièrement open‑source et gratuit pour un usage personnel. Si vous trouvez cet outil utile, vous pouvez soutenir volontairement son développement via Ko‑fi :
