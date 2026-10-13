@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 name: Build SnipOCR Windows
-
-=======
-name: Build SnipOCR Windows
->>>>>>> e07ba7e9c7b5ee827a7f28071f30e98f96bfb57b
 on:
   push:
     branches: [main, master]
@@ -22,11 +17,9 @@ env:
 jobs:
   build-windows:
     runs-on: windows-latest
-<<<<<<< HEAD
-=======
     env:
       PYTHONIOENCODING: utf-8
->>>>>>> e07ba7e9c7b5ee827a7f28071f30e98f96bfb57b
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
