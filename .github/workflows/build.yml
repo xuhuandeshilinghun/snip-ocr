@@ -28,16 +28,20 @@ jobs:
         with:
           python-version: '3.11'
 
-      # 仅本步骤使用pwsh，导出python完整路径给后续cmd使用
-      - name: Export python exe path
+      # 获取3.11 python.exe完整绝对路径，存入全局环境变量PY_FULL
+      - name: Get full python path
         shell: pwsh
-        run: echo "PYTHON_EXE=$env:Python" >> $env:GITHUB_ENV
-
-      - name: Install Python deps
-        shell: cmd
         run: |
-          "%PYTHON_EXE%" -m pip install --upgrade pip
-          "%PYTHON_EXE%" -m pip install pycryptodome requests
+          $pyPath = (Get-Command python).Source
+          Write-Host "Full python path: $pyPath"
+          echo "PY_FULL=$pyPath" >> $env:GITHUB_ENV
+
+      # 使用完整路径安装依赖，保证安装到3.11
+      - name: Install Python deps
+        shell: pwsh
+        run: |
+          & $env:PY_FULL -m pip install --upgrade pip
+          & $env:PY_FULL -m pip install pycryptodome requests
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -59,7 +63,6 @@ jobs:
           else:
               vj = json.loads(Path(".version.json").read_text(encoding="utf-8-sig"))
               ver = vj.get("latest_ver", "V0.0.0").strip().lstrip("vV")
-          # 若 git tag 是 vX.Y.Z 则优先用 tag
           tag = os.environ.get("GITHUB_REF_NAME", "")
           if re.match(r"^v\d+\.\d+\.\d+$", tag):
               ver = tag[1:]
@@ -76,11 +79,12 @@ jobs:
           path: third_party
           key: third-party-${{ runner.os }}-opencv4.10.0-ort1.18.1-${{ hashFiles('tools/setup_third_party.py') }}
 
+      # 全部使用完整路径调用python，不受PATH污染影响
       - name: Setup third party dependencies
         if: steps.cache-third-party.outputs.cache-hit != 'true'
-        shell: cmd
+        shell: pwsh
         run: |
-          "%PYTHON_EXE%" tools/setup_third_party.py
+          & $env:PY_FULL tools/setup_third_party.py
 
       - name: Setup MSVC environment
         uses: ilammy/msvc-dev-cmd@v1
@@ -88,15 +92,16 @@ jobs:
           arch: x64
 
       - name: Compile locale resources
-        shell: cmd
+        shell: pwsh
         run: |
-          "%PYTHON_EXE%" tools/compile_locales.py
+          & $env:PY_FULL tools/compile_locales.py
 
       - name: Pack image resources
-        shell: cmd
+        shell: pwsh
         run: |
-          "%PYTHON_EXE%" tools/pack_img_res.py
+          & $env:PY_FULL tools/pack_img_res.py
 
+      # CMake编译必须保留shell:cmd，VS环境
       - name: CMake Configure
         shell: cmd
         run: |
@@ -111,14 +116,14 @@ jobs:
           cmake --build build --config Release -- /m /verbosity:minimal
 
       - name: Collect release files
-        shell: cmd
+        shell: pwsh
         run: |
-          "%PYTHON_EXE%" tools/make_release.py --version ${{ steps.version.outputs.version }} --no-build
+          & $env:PY_FULL tools/make_release.py --version ${{ steps.version.outputs.version }} --no-build
 
       - name: Pack green zip
-        shell: cmd
+        shell: pwsh
         run: |
-          "%PYTHON_EXE%" tools/make_green_zip.py --version ${{ steps.version.outputs.version }}
+          & $env:PY_FULL tools/make_green_zip.py --version ${{ steps.version.outputs.version }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
