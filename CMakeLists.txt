@@ -1,6 +1,7 @@
-﻿
 
-
+#
+#
+#
 cmake_minimum_required(VERSION 3.16)
 project(SnipOCR LANGUAGES CXX C)
 
@@ -10,8 +11,11 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL")
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-# Qt6
-set(CMAKE_PREFIX_PATH "D:/Qt/6.8.3/msvc2022_64")
+# ─── Qt6：支持环境变量 / 缓存变量覆盖路径 ───
+# 本地开发默认 D:/Qt/6.8.3/msvc2022_64；CI 通过 CMAKE_PREFIX_PATH 环境变量或 -DCMAKE_PREFIX_PATH= 传入
+if(NOT DEFINED CMAKE_PREFIX_PATH)
+    set(CMAKE_PREFIX_PATH "D:/Qt/6.8.3/msvc2022_64")
+endif()
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network Svg)
 
 # nlohmann/json (header-only)
@@ -20,24 +24,29 @@ include_directories(${CMAKE_SOURCE_DIR}/third_party)
 include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/core ${CMAKE_SOURCE_DIR}/ui)
 
 
-# ONNX Runtime 1.18.1
-set(ORT_DIR ${CMAKE_SOURCE_DIR}/third_party/onnxruntime-win-x64-1.18.1)
+# ─── ONNX Runtime 1.18.1：路径可通过 -DORT_DIR= 覆盖 ───
+set(ORT_DIR "${CMAKE_SOURCE_DIR}/third_party/onnxruntime-win-x64-1.18.1" CACHE PATH "ONNX Runtime root")
 include_directories(${ORT_DIR}/include)
 link_directories(${ORT_DIR}/lib)
 
-# OpenCV 4.10.0 (lite: core + imgproc + imgcodecs only, ~9.5MB DLL set)
-set(OPENCV_DIR ${CMAKE_SOURCE_DIR}/third_party/opencv/build_lite/install)
+# ─── OpenCV：路径与库名可配置 ───
+# OPENCV_ROOT 指向 third_party/opencv（含 build_lite/install 与 sources）
+# OPENCV_LIBS：本地 lite 构建用 opencv_core4100/opencv_imgproc4100/opencv_imgcodecs4100；
+#              CI 官方预编译包用 opencv_world4100
+set(OPENCV_ROOT "${CMAKE_SOURCE_DIR}/third_party/opencv" CACHE PATH "OpenCV root")
+set(OPENCV_DIR "${OPENCV_ROOT}/build_lite/install" CACHE PATH "OpenCV install dir")
+set(OPENCV_LIBS "opencv_core4100;opencv_imgproc4100;opencv_imgcodecs4100" CACHE STRING "OpenCV libraries to link")
 include_directories(${OPENCV_DIR}/include)
-include_directories(${CMAKE_SOURCE_DIR}/third_party/opencv/sources/3rdparty/quirc/include)
+include_directories(${OPENCV_ROOT}/sources/3rdparty/quirc/include)
 link_directories(${OPENCV_DIR}/x64/vc16/lib)
 
 # zlib (from OpenCV build) - used by minizip
-set(ZLIB_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/third_party/opencv/sources/3rdparty/zlib)
-set(ZLIB_INCLUDE_DIR2 ${CMAKE_SOURCE_DIR}/third_party/opencv/build_lite/3rdparty/zlib)
-set(ZLIB_LIB ${CMAKE_SOURCE_DIR}/third_party/opencv/build_lite/3rdparty/lib/Release/zlib.lib)
+set(ZLIB_INCLUDE_DIR "${OPENCV_ROOT}/sources/3rdparty/zlib")
+set(ZLIB_INCLUDE_DIR2 "${OPENCV_ROOT}/build_lite/3rdparty/zlib")
+set(ZLIB_LIB "${OPENCV_ROOT}/build_lite/3rdparty/lib/Release/zlib.lib" CACHE FILEPATH "zlib static lib")
 
 # minizip (for updater zip extraction)
-set(MINIZIP_DIR ${CMAKE_SOURCE_DIR}/third_party/minizip)
+set(MINIZIP_DIR "${CMAKE_SOURCE_DIR}/third_party/minizip")
 
 set(SOURCES
     main.cpp
@@ -105,13 +114,8 @@ add_executable(SnipOCR ${SOURCES} ${HEADERS} SnipOCR.rc)
 # ONNX Runtime
 target_link_libraries(SnipOCR PRIVATE onnxruntime)
 
-# OpenCV (lite build: core + imgproc + imgcodecs only, ~9.5MB total)
-# All configs link release libs; force release CRT below.
-target_link_libraries(SnipOCR PRIVATE
-    opencv_core4100
-    opencv_imgproc4100
-    opencv_imgcodecs4100
-)
+# OpenCV (libs 由缓存变量决定，CI 用 opencv_world4100)
+target_link_libraries(SnipOCR PRIVATE ${OPENCV_LIBS})
 
 target_link_libraries(SnipOCR PRIVATE
     Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Network Qt6::Svg
@@ -132,15 +136,9 @@ add_custom_command(TARGET SnipOCR POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${ORT_DIR}/lib/onnxruntime_providers_shared.dll"
         $<TARGET_FILE_DIR:SnipOCR>
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${OPENCV_DIR}/x64/vc16/bin/opencv_core4100.dll"
-        $<TARGET_FILE_DIR:SnipOCR>
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${OPENCV_DIR}/x64/vc16/bin/opencv_imgproc4100.dll"
-        $<TARGET_FILE_DIR:SnipOCR>
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${OPENCV_DIR}/x64/vc16/bin/opencv_imgcodecs4100.dll"
-        $<TARGET_FILE_DIR:SnipOCR>
+    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different
+        "${OPENCV_DIR}/x64/vc16/bin"
+        "$<TARGET_FILE_DIR:SnipOCR>"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${CMAKE_SOURCE_DIR}/.version.json"
         $<TARGET_FILE_DIR:SnipOCR>
@@ -185,8 +183,8 @@ add_custom_command(TARGET SnipOCR POST_BUILD
 )
 
 # ─── Standalone updater executable (minizip-based) ───
-# Only build if minizip source files exist; otherwise skip gracefully.
-if(EXISTS "${MINIZIP_DIR}/ioapi.c" AND EXISTS "${MINIZIP_DIR}/unzip.c")
+# Only build if minizip source files and zlib lib exist; otherwise skip gracefully.
+if(EXISTS "${MINIZIP_DIR}/ioapi.c" AND EXISTS "${MINIZIP_DIR}/unzip.c" AND EXISTS "${ZLIB_LIB}")
     add_executable(updater
         updater_main.cpp
         updater.rc
@@ -213,6 +211,5 @@ if(EXISTS "${MINIZIP_DIR}/ioapi.c" AND EXISTS "${MINIZIP_DIR}/unzip.c")
             $<TARGET_FILE_DIR:SnipOCR>
     )
 else()
-    message(WARNING "minizip not found at ${MINIZIP_DIR} - skipping updater build")
+    message(WARNING "minizip or zlib not found - skipping updater build")
 endif()
-

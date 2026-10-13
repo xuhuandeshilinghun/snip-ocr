@@ -1,0 +1,132 @@
+name: Build SnapOCR Windows
+
+on:
+  push:
+    branches: [main, master]
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '版本号（如 1.0.0），留空则从 .version.json 读取'
+        required: false
+        default: ''
+
+env:
+  QT_VERSION: '6.8.3'
+  QT_ARCH: 'win64_msvc2022_64'
+  VS_VERSION: '2022'
+  BUILD_TYPE: 'Release'
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pycryptodome requests
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          arch: ${{ env.QT_ARCH }}
+          dir: ${{ github.workspace }}\Qt
+          cache: true
+
+      - name: Determine version
+        id: version
+        shell: python
+        run: |
+          import json, os, re
+          from pathlib import Path
+          manual = os.environ.get("INPUT_VERSION", "")
+          if manual:
+              ver = manual.strip().lstrip("vV")
+          else:
+              vj = json.loads(Path(".version.json").read_text(encoding="utf-8-sig"))
+              ver = vj.get("latest_ver", "V0.0.0").strip().lstrip("vV")
+          # 若 git tag 是 vX.Y.Z 则优先用 tag
+          tag = os.environ.get("GITHUB_REF_NAME", "")
+          if re.match(r"^v\d+\.\d+\.\d+$", tag):
+              ver = tag[1:]
+          print(f"version={ver}")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+              f.write(f"version={ver}\n")
+        env:
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+
+      - name: Cache third_party
+        id: cache-third-party
+        uses: actions/cache@v4
+        with:
+          path: third_party
+          key: third-party-${{ runner.os }}-opencv4.10.0-ort1.18.1-${{ hashFiles('tools/setup_third_party.py') }}
+
+      - name: Setup third party dependencies
+        if: steps.cache-third-party.outputs.cache-hit != 'true'
+        shell: cmd
+        run: |
+          python tools/setup_third_party.py
+
+      - name: Setup MSVC environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Compile locale resources
+        shell: cmd
+        run: |
+          python tools/compile_locales.py
+
+      - name: Pack image resources
+        shell: cmd
+        run: |
+          python tools/pack_img_res.py
+
+      - name: CMake Configure
+        shell: cmd
+        run: |
+          cmake -S . -B build -G "Visual Studio 17 2022" -A x64 ^
+            -DCMAKE_BUILD_TYPE=Release ^
+            -DCMAKE_PREFIX_PATH="%Qt6_DIR%" ^
+            -DOPENCV_LIBS=opencv_world4100
+
+      - name: Build
+        shell: cmd
+        run: |
+          cmake --build build --config Release -- /m /verbosity:minimal
+
+      - name: Collect release files
+        shell: cmd
+        run: |
+          python tools/make_release.py --version ${{ steps.version.outputs.version }} --no-build
+
+      - name: Pack green zip
+        shell: cmd
+        run: |
+          python tools/make_green_zip.py --version ${{ steps.version.outputs.version }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SnapOCR-${{ steps.version.outputs.version }}-win64
+          path: SnapOCR-${{ steps.version.outputs.version }}-win64.zip
+          if-no-files-found: error
+
+      - name: Upload release assets (on tag)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            SnapOCR-${{ steps.version.outputs.version }}-win64.zip
+          generate_release_notes: true
