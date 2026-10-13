@@ -77,7 +77,7 @@ jobs:
         if: steps.cache-third-party.outputs.cache-hit != 'true'
         shell: cmd
         run: |
-          %python% tools/setup_third_party.py
+          & $env:Python tools/setup_third_party.py
 
       - name: Setup MSVC environment
         uses: ilammy/msvc-dev-cmd@v1
@@ -87,12 +87,12 @@ jobs:
       - name: Compile locale resources
         shell: cmd
         run: |
-          %python% tools/compile_locales.py
+          & $env:Python tools/compile_locales.py
 
       - name: Pack image resources
         shell: cmd
         run: |
-          %python% tools/pack_img_res.py
+          & $env:Python tools/pack_img_res.py
 
       - name: CMake Configure
         shell: cmd
@@ -110,12 +110,12 @@ jobs:
       - name: Collect release files
         shell: cmd
         run: |
-          %python% tools/make_release.py --version ${{ steps.version.outputs.version }} --no-build
+          & $env:Python tools/make_release.py --version ${{ steps.version.outputs.version }} --no-build
 
       - name: Pack green zip
         shell: cmd
         run: |
-          %python% tools/make_green_zip.py --version ${{ steps.version.outputs.version }}
+          & $env:Python tools/make_green_zip.py --version ${{ steps.version.outputs.version }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
