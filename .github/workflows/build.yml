@@ -97,34 +97,58 @@ jobs:
         run: |
           & $env:PY_FULL tools/pack_img_res.py
 
-      # ========= MSVC、CMake Configure、Build 全部在同一个step内 =========
-      - name: CMake Configure & Build
+      # ========= MSVC 环境单独一步；CMake Configure / Build 必须是真正的 shell 步骤 =========
+      # 注意：不能把 run: 写在 ilammy/msvc-dev-cmd 的 with: 里 —— 该 action 没有 run 输入，
+      # 那样写 cmake 命令根本不会被执行，build/Release 为空，打出来的包自然不完整。
+      - name: Setup MSVC environment
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x64
-          run: |
-            cmake -S . -B build -G "Visual Studio 17 2022" -A x64 ^
-              -DCMAKE_BUILD_TYPE=Release ^
-              -DCMAKE_PREFIX_PATH="%Qt6_DIR%" ^
-              -DOPENCV_LIBS=opencv_world4100
-            if %errorlevel% neq 0 exit /b %errorlevel%
-            cmake --build build --config Release -- /m /verbosity:minimal
+
+      - name: CMake Configure
+        shell: cmd
+        run: |
+          cmake -S . -B build -G "Visual Studio 17 2022" -A x64 ^
+            -DCMAKE_BUILD_TYPE=Release ^
+            -DCMAKE_PREFIX_PATH="%QT_ROOT_DIR%" ^
+            -DOPENCV_LIBS=opencv_world4100
+          if %errorlevel% neq 0 exit /b %errorlevel%
+
+      - name: CMake Build
+        shell: cmd
+        run: |
+          cmake --build build --config Release -- /m /verbosity:minimal
+          if %errorlevel% neq 0 exit /b %errorlevel%
+
+      # 部署 Qt 运行时（Qt6*.dll + platforms/ 等插件 + MSVC 运行时）。
+      # 缺少 Qt6Core.dll / platforms\qwindows.dll 时，双击 exe 无法启动。
+      # QT_ROOT_DIR 由 jurplel/install-qt-action 设置，指向 Qt 安装根目录。
+      - name: Deploy Qt runtime
+        shell: cmd
+        run: |
+          "%QT_ROOT_DIR%\bin\windeployqt.exe" --release --no-translations --compiler-runtime build\Release\SnipOCR.exe
+          if %errorlevel% neq 0 exit /b %errorlevel%
 
       - name: Collect release files
         shell: pwsh
         run: |
           & $env:PY_FULL tools/make_release.py --version ${{ steps.version.outputs.version }} --no-build
 
+      # 保留绿色版 zip，仅用于 Release 附件（打 tag 时上传）
       - name: Pack green zip
         shell: pwsh
         run: |
           & $env:PY_FULL tools/make_green_zip.py --version ${{ steps.version.outputs.version }}
 
+      # GitHub 的 artifact 下载本身就是 zip：如果这里再上传一个 zip，
+      # 下载下来就会是「zip 里再套一个同名 zip」。所以直接上传发布目录内容，
+      # 下载到的 zip 解压后即为可直接运行的绿色版。
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: SnipOCR-${{ steps.version.outputs.version }}-win64
-          path: SnipOCR-${{ steps.version.outputs.version }}-win64.zip
+          path: build_release_${{ steps.version.outputs.version }}/
+          include-hidden-files: true
           if-no-files-found: error
 
       - name: Upload release assets (on tag)

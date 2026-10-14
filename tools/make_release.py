@@ -11,6 +11,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from make_green_zip import README_TEMPLATE
+
 
 def find_msbuild() -> str:
     
@@ -225,6 +227,11 @@ def collect_files(project_dir: Path, output_dir: Path, version: str) -> bool:
     (output_dir / ".version.json").write_text(
         json.dumps(version_data, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"  .version.json")
+
+    # 首次运行说明：同时写进发布目录，目录本身即可作为绿色版（artifact 上传用）
+    (output_dir / "README.txt").write_text(
+        README_TEMPLATE.format(version=version), encoding="utf-8")
+    print(f"  README.txt")
 
     return True
 

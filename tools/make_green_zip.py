@@ -53,6 +53,33 @@ README_TEMPLATE = """SnipOCR v{version} - Windows 绿色版
 EXCLUDE_DIRS = {"history", "model", "__pycache__"}
 EXCLUDE_SUFFIXES = {".pdb", ".ilk", ".exp", ".obj", ".tlog"}
 
+# 包内必须存在的文件；缺少则包必然不可用
+REQUIRED_ENTRIES = {"snipocr.exe"}
+# 应当存在的 Qt 运行时（缺失说明没跑过 windeployqt）
+EXPECTED_ENTRIES = {"platforms/qwindows.dll"}
+
+
+def check_package_entries(rel_paths: set) -> bool:
+    """校验发布目录内容是否像一份可运行的绿色包。
+
+    rel_paths：相对发布目录、小写、POSIX 风格的文件路径集合。
+    缺少 exe 直接判失败；缺少 Qt 运行时只告警（可能是有意精简或静态链接）。
+    """
+    if not REQUIRED_ENTRIES <= rel_paths:
+        missing = ", ".join(sorted(REQUIRED_ENTRIES - rel_paths))
+        print(f"[ERROR] 发布目录缺少必需文件: {missing}")
+        print("        请先完成编译并用 make_release.py 收集文件，再打包。")
+        return False
+
+    missing = []
+    if not any(p.startswith("qt6") and p.endswith(".dll") for p in rel_paths):
+        missing.append("Qt6*.dll")
+    missing.extend(sorted(e for e in EXPECTED_ENTRIES if e not in rel_paths))
+    if missing:
+        print(f"[WARN] 包内缺少 Qt 运行时文件: {', '.join(missing)}")
+        print("       打包前请先执行 windeployqt 部署 Qt DLL 与插件，否则解压后无法运行。")
+    return True
+
 
 def make_green_zip(src_dir: Path, out_zip: Path, version: str) -> bool:
     if not src_dir.is_dir():
@@ -76,6 +103,10 @@ def make_green_zip(src_dir: Path, out_zip: Path, version: str) -> bool:
         print("[ERROR] 没有可打包的文件")
         return False
 
+    rel_paths = {arc[len(top_dir) + 1:].lower() for _, arc in files_to_pack}
+    if not check_package_entries(rel_paths):
+        return False
+
     out_zip.parent.mkdir(parents=True, exist_ok=True)
     if out_zip.exists():
         out_zip.unlink()
@@ -84,13 +115,16 @@ def make_green_zip(src_dir: Path, out_zip: Path, version: str) -> bool:
 
     print(f"\n打包绿色版: {out_zip}")
     print(f"  源目录: {src_dir}")
-    print(f"  文件数: {len(files_to_pack) + 1}（含 README.txt）")
+    print(f"  文件数: {len(files_to_pack)}")
     print(f"  顶层目录: {top_dir}/")
 
     with zipfile.ZipFile(out_zip, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
         for full, arc in files_to_pack:
             zf.write(full, arc)
-        zf.writestr(f"{top_dir}/README.txt", readme)
+        readme_arc = f"{top_dir}/README.txt"
+        # 发布目录里若已有一份 README.txt（make_release.py 写入），不要重复打包
+        if readme_arc not in {arc for _, arc in files_to_pack}:
+            zf.writestr(readme_arc, readme)
 
     size_mb = out_zip.stat().st_size / 1024 / 1024
     print(f"  完成: {out_zip} ({size_mb:.2f} MB)")
