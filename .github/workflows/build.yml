@@ -115,6 +115,11 @@ jobs:
         run: |
           & $env:PY_FULL tools/make_release.py --version ${{ steps.version.outputs.version }} --no-build
 
+      - name: Pack green zip
+        shell: pwsh
+        run: |
+          & $env:PY_FULL tools/make_green_zip.py --version ${{ steps.version.outputs.version }}
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
