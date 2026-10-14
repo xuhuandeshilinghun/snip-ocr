@@ -9,7 +9,7 @@
 #include "ui_theme.h"
 #include "img_res_loader.h"
 #include "resource_helper.h"
-
+#include "updater.h"
 #include <QSystemTrayIcon>
 #include <QPainter>
 #include <QPixmap>
@@ -259,24 +259,31 @@ QString TrayManager::buildTooltipText() const
         for (auto it = vm.constBegin(); it != vm.constEnd(); ++it)
             hk.insert(it.key(), QJsonValue::fromVariant(it.value()));
     }
-    QString SnipKey = hk.value("Snipshot").toString("F1");
+    QString snapKey = hk.value("snapshot").toString("F1");
     QString ocrKey = hk.value("ocr").toString("Ctrl+Shift+O");
-    QString title = I18n::t("app.title", "SnipOCR");
-    QString SnipLabel = I18n::t("tray.screenshot_hotkey", "Screenshot hotkey");
+    QString delay_key = hk.value("delay_snapshot").toString("Ctrl+G");
+    QString title = I18n::t("app.title", "SnapOCR");
+    QString snapLabel = I18n::t("tray.screenshot_hotkey", "Screenshot hotkey");
     QString ocrLabel = I18n::t("tray.ocr_hotkey", "OCR hotkey");
     QString freeLabel = I18n::t("tray.free_version", "Free");
-    
+    QString delay_hotLabel = I18n::t("settings.delay_hotkey", "Delay hotkey");
+
+
+    QString version = Updater::get_current_version();
+    // OCR 不可用时不显示 OCR 快捷键行
     QString modelPath = QDir(QCoreApplication::applicationDirPath()).filePath("model/MediaOCR-Base-v1.mtk-model");
     bool hasModel = QFileInfo::exists(modelPath);
     if (hasModel) {
-        return QStringLiteral("%1 V1.0.0 %2\n%3: %4\n%5: %6")
-            .arg(title).arg(freeLabel)
-            .arg(SnipLabel).arg(SnipKey)
-            .arg(ocrLabel).arg(ocrKey);
+        return QStringLiteral("%1 V%2 %3\n%4: %5\n%6: %7\n%8: %9")
+            .arg(title).arg(version).arg(freeLabel)
+            .arg(snapLabel).arg(snapKey)
+            .arg(ocrLabel).arg(ocrKey)
+            .arg(delay_hotLabel).arg(delay_key);
     }
-    return QStringLiteral("%1 V1.0.0 %2\n%3: %4")
-        .arg(title).arg(freeLabel)
-        .arg(SnipLabel).arg(SnipKey);
+    return QStringLiteral("%1 V%2 %3\n%4: %5\n%6: %7")
+        .arg(title).arg(version).arg(freeLabel)
+        .arg(snapLabel).arg(snapKey)
+        .arg(delay_hotLabel).arg(delay_key);
 }
 
 void TrayManager::showIcon()

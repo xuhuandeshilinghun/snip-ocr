@@ -105,10 +105,13 @@ jobs:
         with:
           arch: x64
 
+      # 不指定 -G：windows-latest 已切到 Windows Server 2025 + VS 2026（大版本 18），
+      # 写死 "Visual Studio 17 2022" 会直接报 could not find any instance of Visual Studio。
+      # 省略 -G 时 CMake 会自动选择本机最新已安装的 Visual Studio，避免跟随镜像升级而失效。
       - name: CMake Configure
         shell: cmd
         run: |
-          cmake -S . -B build -G "Visual Studio 17 2022" -A x64 ^
+          cmake -S . -B build -A x64 ^
             -DCMAKE_BUILD_TYPE=Release ^
             -DCMAKE_PREFIX_PATH="%QT_ROOT_DIR%" ^
             -DOPENCV_LIBS=opencv_world4100

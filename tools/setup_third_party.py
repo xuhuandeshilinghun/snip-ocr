@@ -237,11 +237,12 @@ def setup_zlib(opencv_root: Path, force: bool = False) -> None:
 
     # CMake 配置 + 构建（自动检测 VS 版本）
     gen, arch = _find_vs_generator()
-    if not gen:
+    if gen is None:
         print(f"[zlib] 未找到 Visual Studio，跳过编译")
         return
+    gen_args = ["-G", gen] if gen else []
     _run([cmake, "-S", str(zlib_build), "-B", str(zlib_build / "build"),
-          "-G", gen, "-A", arch], cwd=str(zlib_build))
+          *gen_args, "-A", arch], cwd=str(zlib_build))
     _run([cmake, "--build", str(zlib_build / "build"),
           "--config", "Release", "--target", "zlib"])
 
@@ -290,9 +291,23 @@ def _find_cmake() -> str:
     return ""
 
 
+# 已知的 VS 大版本 -> CMake 生成器名（VS 2026 起需要 CMake >= 4.2）
+VS_GENERATORS = {
+    "18": "Visual Studio 18 2026",
+    "17": "Visual Studio 17 2022",
+    "16": "Visual Studio 16 2019",
+}
+
+
 def _find_vs_generator() -> tuple:
-    """返回可用的 CMake VS 生成器名与平台参数。
-    优先 VS 2022，回退 VS 2019。找不到返回 (None, None)。"""
+    """返回 (CMake VS 生成器名, 平台参数)。
+
+    生成器名为空字符串表示「已装 VS，但版本未知，让 CMake 自己选最新已安装的版本」；
+    返回 (None, None) 表示没检测到 Visual Studio。
+
+    不要写死版本号：VS 大版本升级（如 17 -> 18）后旧生成器名会直接报
+    could not find any instance of Visual Studio，编译会被静默跳过。
+    """
     vswhere = r"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
     version_line = ""
     if Path(vswhere).is_file():
@@ -304,10 +319,9 @@ def _find_vs_generator() -> tuple:
             version_line = r.stdout.strip()
         except Exception:
             pass
-    if version_line.startswith("17"):
-        return ("Visual Studio 17 2022", "x64")
-    if version_line.startswith("16"):
-        return ("Visual Studio 16 2019", "x64")
+    if version_line:
+        major = version_line.split(".")[0]
+        return (VS_GENERATORS.get(major, ""), "x64")
     # 回退：检查常见路径
     if Path(r"C:\Program Files\Microsoft Visual Studio\2022").exists():
         return ("Visual Studio 17 2022", "x64")

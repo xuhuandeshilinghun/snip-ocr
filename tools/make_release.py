@@ -124,8 +124,11 @@ def build_project(project_dir: Path) -> bool:
 
     
     print("\n[1/3] CMake 配置...")
+    # 不指定 -G：由 CMake 选择本机最新已安装的 Visual Studio。
+    # 写死版本号（如 Visual Studio 16 2019）在 VS 升级后会直接报
+    # could not find any instance of Visual Studio。
     cmd = [cmake, "-S", str(project_dir), "-B", str(build_dir),
-           "-G", "Visual Studio 16 2019", "-A", "x64",
+           "-A", "x64",
            f"-DCMAKE_BUILD_TYPE=Release"]
     result = subprocess.run(cmd, cwd=str(project_dir))
     if result.returncode != 0:
